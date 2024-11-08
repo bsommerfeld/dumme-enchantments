@@ -20,6 +20,7 @@ object SoundRegistry {
         Registry.register(Registries.SOUND_EVENT, "trash_close".toId(), SoundEvent.of("trash_close".toId()))
     val BALLOON_POP = register("balloon_pop")
     val BALLOON_BLOW_UP = register("balloon_blow_up")
+    val DOMINO_FALL = register("domino_fall")
 
     fun init() {
     }

@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import gg.norisk.enchantments.impl.BalloonEnchantment;
 import gg.norisk.enchantments.impl.MedusaEnchantment;
 import gg.norisk.enchantments.impl.SquishEnchantment;
+import gg.norisk.satisfying.SatisfyingTrail;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;

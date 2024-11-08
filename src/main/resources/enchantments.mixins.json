@@ -21,10 +21,10 @@
     "ProjectileEntityMixin",
     "ServerPlayerEntityMixin",
     "ServerWorldMixin",
-    "ShovelItemMixin"
+    "ShovelItemMixin",
+    "client.LimbAnimatorAccessor"
   ],
   "client": [
-    "client.MouseMixin",
     "client.AnimalModelMixin",
     "client.ClientPlayerEntityMixin",
     "client.ClientWorldMixin",
@@ -37,9 +37,13 @@
     "client.LivingEntityRendererMixin",
     "client.ModelPartAccessor",
     "client.ModelPartMixin",
+    "client.MouseMixin",
     "client.PlayerEntityRendererMixin",
     "client.ProjectileEntityRendererMixin",
     "client.SinglePartEntityModelMixin",
-    "client.WorldRendererMixin"
+    "client.WorldRendererMixin",
+    "client.satisfying.EntityRenderDispatcherMixin",
+    "client.satisfying.LivingEntityRendererMixin",
+    "client.satisfying.PlayerEntityRendererMixin"
   ]
 }

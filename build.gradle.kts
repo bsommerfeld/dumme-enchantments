@@ -61,7 +61,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:1.10.19+kotlin.1.9.23")
 
     modImplementation("gg.norisk:datatracker:${minecraftVersion}-1.0.7")
-    modImplementation("gg.norisk:emote-lib:${minecraftVersion}-1.0.18")
+    modImplementation("gg.norisk:emote-lib:${minecraftVersion}-1.0.29")
     modImplementation("gg.norisk:owoplus:${minecraftVersion}-1.0.6")
     modImplementation("io.github.ladysnake:satin:2.0.0")
 

@@ -38,5 +38,10 @@
     "sounds": [
       "enchantments:balloon_pop"
     ]
+  },
+  "domino_fall": {
+    "sounds": [
+      "enchantments:domino_fall"
+    ]
   }
 }

@@ -3,6 +3,7 @@ package gg.norisk.enchantments
 import gg.norisk.enchantments.command.EnchantmentsCommand
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.sound.SoundRegistry
+import gg.norisk.satisfying.SatisfyingTrail
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.ModInitializer
 import net.minecraft.util.Identifier
@@ -41,5 +42,6 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         VerificationEnchantment.initClient()
         HelicopterEnchantment.initClient()
         MemeEnchantment.initClient()
+        SatisfyingTrail.initClient()
     }
 }
