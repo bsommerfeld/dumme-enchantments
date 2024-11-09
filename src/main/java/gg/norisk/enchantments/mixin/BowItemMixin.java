@@ -3,6 +3,7 @@ package gg.norisk.enchantments.mixin;
 import gg.norisk.enchantments.impl.BouncyEnchantment;
 import gg.norisk.satisfying.SatisfyingArrowTrail;
 import gg.norisk.satisfying.SatisfyingChainReaction;
+import gg.norisk.satisfying.SatisfyingCircleShoot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.BowItem;
@@ -18,5 +19,6 @@ public abstract class BowItemMixin {
         BouncyEnchantment.INSTANCE.applyBounce(livingEntity, projectileEntity);
         SatisfyingArrowTrail.INSTANCE.applyTrail(livingEntity, projectileEntity);
         SatisfyingChainReaction.INSTANCE.applyChainReaction(livingEntity, projectileEntity);
+        SatisfyingCircleShoot.INSTANCE.applyCircleShoot(livingEntity, projectileEntity, i, f, g, h);
     }
 }
