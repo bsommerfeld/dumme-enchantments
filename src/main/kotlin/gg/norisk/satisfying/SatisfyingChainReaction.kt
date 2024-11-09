@@ -19,7 +19,7 @@ import net.minecraft.util.math.Vec3d
 import net.silkmc.silk.core.event.EntityEvents
 
 object SatisfyingChainReaction {
-    private const val SEARCH_RADIUS = 20.0  // Radius to search for the next target in blocks
+    private const val SEARCH_RADIUS = 30.0  // Radius to search for the next target in blocks
 
     fun initServer() {
         EntityEvents.damageLivingEntity.listen { event ->
@@ -105,16 +105,27 @@ object SatisfyingChainReaction {
         arrowEntity: ArrowEntity,
         shooter: Entity?
     ) {
-        val direction = Vec3d(to.x - from.x, to.y + to.standingEyeHeight - from.y, to.z - from.z).normalize()
-        val newArrow =
-            ArrowEntity(world, from.x, from.y + from.standingEyeHeight / 2, from.z, Items.ARROW.defaultStack, null)
+        // Calculate the direction vector from `from` to `to`
+        val direction = Vec3d(to.x - from.x, to.y + to.standingEyeHeight / 2 - from.y, to.z - from.z).normalize()
 
+        // Calculate distance between the two entities
+        val distance = from.pos.distanceTo(to.pos).toFloat()
+
+        // Set a speed multiplier based on distance, with a slight increase
+        val baseSpeed = 1.5f
+        val speedMultiplier = 1.0f + if (distance > 15) distance * 0.05f else (distance * 0.005f)  // Adjust 0.05f to control the speed increase per unit distance
+
+        // Create and configure the new arrow entity
+        val newArrow = ArrowEntity(world, from.x, from.y + from.standingEyeHeight / 2, from.z, Items.ARROW.defaultStack, null)
         newArrow.owner = shooter ?: from
         newArrow.satisfyingChainReactionOwnerId = arrowEntity.satisfyingChainReactionOwnerId
         newArrow.satisfyingLastChainReactionHitId = from.id
         newArrow.hasSatisfyingArrowTrail = arrowEntity.hasSatisfyingArrowTrail
-        newArrow.setVelocity(direction.x, direction.y, direction.z, 1.5f, 0.0f)  // Adjust speed as needed
 
+        // Set the velocity with the calculated speed multiplier
+        newArrow.setVelocity(direction.x, direction.y, direction.z, baseSpeed * speedMultiplier, 0.0f)
+
+        // Spawn the arrow in the world
         world.spawnEntity(newArrow)
     }
 }
