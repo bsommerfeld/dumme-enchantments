@@ -21,6 +21,7 @@ object SoundRegistry {
     val BALLOON_POP = register("balloon_pop")
     val BALLOON_BLOW_UP = register("balloon_blow_up")
     val DOMINO_FALL = register("domino_fall")
+    val EXPERIENCE_LINE = register("experience_line")
 
     fun init() {
     }

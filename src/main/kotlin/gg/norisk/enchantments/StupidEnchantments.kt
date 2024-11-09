@@ -3,6 +3,7 @@ package gg.norisk.enchantments
 import gg.norisk.enchantments.command.EnchantmentsCommand
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.sound.SoundRegistry
+import gg.norisk.satisfying.SatisfyingExperience
 import gg.norisk.satisfying.SatisfyingTrail
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.ModInitializer
@@ -29,6 +30,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         BalloonEnchantment.initServer()
         AimBotEnchantment.initServer()
         RamEnchantment.initServer()
+        SatisfyingExperience.initServer()
     }
 
     override fun onInitializeClient() {
@@ -43,5 +45,6 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         HelicopterEnchantment.initClient()
         MemeEnchantment.initClient()
         SatisfyingTrail.initClient()
+        SatisfyingExperience.initClient()
     }
 }

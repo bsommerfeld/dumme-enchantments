@@ -43,5 +43,10 @@
     "sounds": [
       "enchantments:domino_fall"
     ]
+  },
+  "experience_line": {
+    "sounds": [
+      "enchantments:experience_line"
+    ]
   }
 }

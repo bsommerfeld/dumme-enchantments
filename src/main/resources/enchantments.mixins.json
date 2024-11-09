@@ -22,7 +22,10 @@
     "ServerPlayerEntityMixin",
     "ServerWorldMixin",
     "ShovelItemMixin",
-    "client.LimbAnimatorAccessor"
+    "client.LimbAnimatorAccessor",
+    "client.satisfying.EntityRendererMixin",
+    "satisfying.ExperienceOrbEntityMixin",
+    "satisfying.TreeFeatureMixin"
   ],
   "client": [
     "client.AnimalModelMixin",
@@ -42,8 +45,12 @@
     "client.ProjectileEntityRendererMixin",
     "client.SinglePartEntityModelMixin",
     "client.WorldRendererMixin",
+    "client.satisfying.AnimalModelMixin",
+    "client.satisfying.CuboidAccessor",
     "client.satisfying.EntityRenderDispatcherMixin",
     "client.satisfying.LivingEntityRendererMixin",
+    "client.satisfying.ModelPartDataMixin",
+    "client.satisfying.ModelPartMixin",
     "client.satisfying.PlayerEntityRendererMixin"
   ]
 }

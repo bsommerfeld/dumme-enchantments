@@ -17,6 +17,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,6 +35,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
     public abstract boolean damage(DamageSource damageSource, float f);
+
+    @Shadow
+    public abstract void remove(RemovalReason removalReason);
 
     public LivingEntityMixin(EntityType<?> entityType, World world) {
         super(entityType, world);
@@ -57,6 +62,19 @@ public abstract class LivingEntityMixin extends Entity {
     private SoundEvent stupid$MedusaHurtSound(SoundEvent original) {
         if (MedusaEnchantment.INSTANCE.isStupidMedusa((LivingEntity) (Object) this)) {
             return Blocks.STONE.getDefaultState().getSoundGroup().getBreakSound();
+        }
+        return original;
+    }
+
+    @ModifyExpressionValue(
+            method = "drop",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;shouldDropLoot()Z")
+    )
+    private boolean satisfying$shouldDropLoot(boolean original, ServerWorld serverWorld, DamageSource damageSource) {
+        if (damageSource.getAttacker() instanceof ServerPlayerEntity entity) {
+            if (EnchantmentUtils.INSTANCE.getLevel(EnchantmentRegistry.INSTANCE.getExperience(), entity.getMainHandStack()) != null) {
+                return false;
+            }
         }
         return original;
     }
