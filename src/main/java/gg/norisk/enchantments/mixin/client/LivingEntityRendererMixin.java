@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import gg.norisk.enchantments.impl.BalloonEnchantment;
 import gg.norisk.enchantments.impl.MedusaEnchantment;
 import gg.norisk.enchantments.impl.SquishEnchantment;
+import gg.norisk.satisfying.SatisfyingCrush;
 import gg.norisk.satisfying.SatisfyingTrail;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
@@ -32,6 +33,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;scale(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/util/math/MatrixStack;F)V", shift = At.Shift.AFTER))
     private void afterScale(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         SquishEnchantment.INSTANCE.handleSquishRendering(livingEntity, matrixStack);
+        SatisfyingCrush.INSTANCE.handleCrushRendering(livingEntity, matrixStack);
     }
 
     @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "HEAD"))

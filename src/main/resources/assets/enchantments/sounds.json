@@ -48,5 +48,10 @@
     "sounds": [
       "enchantments:experience_line"
     ]
+  },
+  "hydraulic_press_start": {
+    "sounds": [
+      "enchantments:hydraulic_press_start"
+    ]
   }
 }

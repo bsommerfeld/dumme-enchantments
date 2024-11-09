@@ -2,6 +2,7 @@ package gg.norisk.enchantments
 
 import gg.norisk.enchantments.EnchantmentRegistry.fastFalling
 import gg.norisk.enchantments.impl.*
+import gg.norisk.satisfying.SatisfyingCrush
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.Entity
@@ -47,6 +48,7 @@ object EnchantmentUtils {
         MemeEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
         VerificationEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
         BalloonEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
+        SatisfyingCrush.applyTargetDamage(world, entity, damageSource, itemStack)
     }
 
     fun Entity.sound(soundEvent: SoundEvent, volume: Number = 1f, pitch: Number = 1f) {
@@ -94,7 +96,8 @@ object EnchantmentUtils {
         for (dx in -1..1) {
             for (dz in -1..1) {
                 val offsetVec = vec3d2.add(dx * thickness, 0.0, dz * thickness)
-                val entityHitResult = ProjectileUtil.raycast(entity, vec3d, vec3d.add(offsetVec), box, predicate, j.toDouble())
+                val entityHitResult =
+                    ProjectileUtil.raycast(entity, vec3d, vec3d.add(offsetVec), box, predicate, j.toDouble())
 
                 if (entityHitResult != null) {
                     val distance = vec3d.squaredDistanceTo(entityHitResult.pos)

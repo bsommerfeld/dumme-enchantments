@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.doubles.Double2DoubleFunction
 import kotlinx.serialization.Serializable
 import kotlin.math.*
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
 @Serializable
@@ -13,6 +14,11 @@ data class Animation(
     var dur: kotlin.time.Duration,
     val id: Long = Random.nextLong()
 ) {
+    companion object {
+        val ZERO = Animation(0f, 0f, 0.seconds, 0)
+    }
+
+
     var startTime: Long
     var easing: Easing = Easing.LINEAR
     var forward: Boolean = true
