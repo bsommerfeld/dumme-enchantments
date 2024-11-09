@@ -16,6 +16,7 @@
     "HoeItemMixin",
     "LivingEntityMixin",
     "LookAtEntityGoalMixin",
+    "MixinPersistentProjectileEntity",
     "PersistentProjectileEntityAccessor",
     "PlayerEntityMixin",
     "ProjectileEntityMixin",

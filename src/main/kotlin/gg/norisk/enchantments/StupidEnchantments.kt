@@ -3,6 +3,7 @@ package gg.norisk.enchantments
 import gg.norisk.enchantments.command.EnchantmentsCommand
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.sound.SoundRegistry
+import gg.norisk.satisfying.SatisfyingChainReaction
 import gg.norisk.satisfying.SatisfyingCrush
 import gg.norisk.satisfying.SatisfyingExperience
 import gg.norisk.satisfying.SatisfyingTrail
@@ -32,6 +33,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         AimBotEnchantment.initServer()
         RamEnchantment.initServer()
         SatisfyingExperience.initServer()
+        SatisfyingChainReaction.initServer()
     }
 
     override fun onInitializeClient() {
