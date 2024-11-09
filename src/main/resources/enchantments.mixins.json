@@ -26,6 +26,9 @@
     "client.LimbAnimatorAccessor",
     "client.satisfying.EntityRendererMixin",
     "satisfying.ExperienceOrbEntityMixin",
+    "satisfying.FishingBobberEntityAccessor",
+    "satisfying.FishingBobberEntityMixin",
+    "satisfying.FishingRodItemMixin",
     "satisfying.TreeFeatureMixin"
   ],
   "client": [
