@@ -25,7 +25,7 @@ object SatisfyingFishing {
         hand: Hand,
     ) {
         val itemStack = playerEntity.getStackInHand(hand)
-        multiFishing.getLevel(itemStack) ?: return
+        val level = multiFishing.getLevel(itemStack) ?: return
         if (world is ServerWorld) {
             // Abstand zwischen den einzelnen Bobbern in der Reihe (quer zur Blickrichtung)
             val offsetDistance = 0.5 // Abstand in Blöcken
@@ -40,7 +40,7 @@ object SatisfyingFishing {
 
             var first: FishingBobberEntity? = null
 
-            for (i in -5..5) { // Generiert 10 Bobber-Entitäten quer zur Blickrichtung
+            for (i in -level..level) { // Generiert 10 Bobber-Entitäten quer zur Blickrichtung
                 val j = (EnchantmentHelper.getFishingTimeReduction(world, itemStack, playerEntity) * 20.0f).toInt()
                 val k = EnchantmentHelper.getFishingLuckBonus(world, itemStack, playerEntity)
 
