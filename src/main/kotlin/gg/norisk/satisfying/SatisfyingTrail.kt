@@ -142,6 +142,10 @@ object SatisfyingTrail {
             }
         }
 
+        override fun canHit(): Boolean {
+            return false
+        }
+
         fun getFadeValue(): Int {
             if (!canFade) return 255
 
