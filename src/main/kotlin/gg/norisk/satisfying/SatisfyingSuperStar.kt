@@ -21,9 +21,17 @@ import net.minecraft.client.render.VertexFormats
 import net.minecraft.client.sound.MovingSoundInstance
 import net.minecraft.client.sound.SoundInstance
 import net.minecraft.entity.Entity
+import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageTypes
+import net.minecraft.entity.effect.StatusEffect
+import net.minecraft.entity.effect.StatusEffectCategory
+import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.item.Items
 import net.minecraft.particle.ParticleTypes
+import net.minecraft.potion.Potion
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
 import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
@@ -32,11 +40,14 @@ import net.minecraft.util.math.Vec3d
 import net.silkmc.silk.commands.command
 import net.silkmc.silk.core.entity.modifyVelocity
 import net.silkmc.silk.core.event.EntityEvents
+import net.silkmc.silk.core.item.itemStack
+import net.silkmc.silk.core.item.setPotion
 import org.ladysnake.satin.api.managed.ManagedCoreShader
 import org.ladysnake.satin.api.managed.ShaderEffectManager
 import java.util.function.BiFunction
 import java.util.function.Function
 import kotlin.time.Duration.Companion.seconds
+
 
 @Suppress("INACCESSIBLE_TYPE")
 object SatisfyingSuperStar {
@@ -88,8 +99,15 @@ object SatisfyingSuperStar {
 
     fun Entity.onTick() {
         if (this is SatisfyingTrail.AfterImagePlayer) return
+        if (this !is LivingEntity) return
+        if (!world.isClient) {
+            if (hasStatusEffect(SUPER_STAR_EFFECT_REGISTRY)) {
+                if (!isSatisfyingSuperMario) isSatisfyingSuperMario = true
+            } else {
+                if (isSatisfyingSuperMario) isSatisfyingSuperMario = false
+            }
+        }
         if (isSatisfyingSuperMario) {
-
             if (!world.isClient) {
                 for (otherEntity in world.getOtherEntities(this, this.boundingBox.expand(1.2)) {
                     !it.isSpectator && it !is PlayerEntity && it.isAlive && it.canHit()
@@ -163,7 +181,22 @@ object SatisfyingSuperStar {
         }
     }
 
+    val SUPER_STAR_EFFECT_REGISTRY = Registry.registerReference(
+        Registries.STATUS_EFFECT,
+        "super_star".toId(),
+        object : StatusEffect(StatusEffectCategory.BENEFICIAL, 0xFFD700) {
+        })
+    val SUPER_STAR_POTION = Registry.registerReference(
+        Registries.POTION, "super_star".toId(), Potion(
+            StatusEffectInstance(SUPER_STAR_EFFECT_REGISTRY, (20.seconds.inWholeMilliseconds / 50).toInt(), 0)
+        )
+    )
+
+
     fun initServer() {
+        SUPER_STAR_EFFECT_REGISTRY
+        SUPER_STAR_POTION
+
         EntityEvents.checkInvulnerability.listen { event ->
             if (!event.source.isOf(DamageTypes.GENERIC_KILL)) {
                 val player = event.entity as? PlayerEntity? ?: return@listen
@@ -191,10 +224,13 @@ object SatisfyingSuperStar {
 
         if (!FabricLoader.getInstance().isDevelopmentEnvironment) return
         command("satisfying") {
-            literal("togglesuperstart") {
+            literal("superstar") {
                 runs {
                     val player = this.source.playerOrThrow
-                    player.isSatisfyingSuperMario = !player.isSatisfyingSuperMario
+                    player.giveItemStack(itemStack(Items.POTION) {
+                        this.setPotion(SUPER_STAR_POTION)
+                    })
+                    //player.isSatisfyingSuperMario = !player.isSatisfyingSuperMario
                 }
             }
         }
