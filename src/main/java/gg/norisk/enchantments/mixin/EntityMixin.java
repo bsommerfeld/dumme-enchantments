@@ -10,6 +10,7 @@ import gg.norisk.enchantments.impl.SquishEnchantment;
 import gg.norisk.enchantments.impl.TrashEnchantment;
 import gg.norisk.enchantments.utils.Animation;
 import gg.norisk.satisfying.SatisfyingCrush;
+import gg.norisk.satisfying.SatisfyingSuperStar;
 import gg.norisk.satisfying.SatisfyingTrail;
 import net.minecraft.entity.Entity;
 import net.minecraft.sound.SoundEvent;
@@ -70,6 +71,7 @@ public abstract class EntityMixin implements SquishEnchantment.SquishEntity, Med
         GlitchEnchantment.INSTANCE.onTick((Entity) (Object) this);
         SatisfyingTrail.INSTANCE.onTick((Entity) (Object) this);
         SatisfyingCrush.INSTANCE.onTick((Entity) (Object) this);
+        SatisfyingSuperStar.INSTANCE.onTick((Entity) (Object) this);
     }
 
     @Inject(method = "setSneaking", at = @At("HEAD"))

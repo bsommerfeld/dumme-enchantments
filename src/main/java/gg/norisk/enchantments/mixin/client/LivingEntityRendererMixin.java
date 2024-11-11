@@ -1,11 +1,13 @@
 package gg.norisk.enchantments.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import gg.norisk.enchantments.impl.BalloonEnchantment;
 import gg.norisk.enchantments.impl.MedusaEnchantment;
 import gg.norisk.enchantments.impl.SquishEnchantment;
 import gg.norisk.satisfying.SatisfyingCrush;
-import gg.norisk.satisfying.SatisfyingTrail;
+import gg.norisk.satisfying.SatisfyingSuperStar;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -34,6 +36,18 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     private void afterScale(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         SquishEnchantment.INSTANCE.handleSquishRendering(livingEntity, matrixStack);
         SatisfyingCrush.INSTANCE.handleCrushRendering(livingEntity, matrixStack);
+    }
+
+    @ModifyReturnValue(
+            method = "getRenderLayer",
+            at = @At(value = "RETURN", ordinal = 1)
+    )
+    private RenderLayer satisfying$chromaLayer(RenderLayer original, T livingEntity, boolean bl, boolean bl2, boolean bl3) {
+        if (SatisfyingSuperStar.INSTANCE.isSatisfyingSuperMario(livingEntity)) {
+            return SatisfyingSuperStar.INSTANCE.getENTITY_TRANSLUCENT().apply(getTexture(livingEntity), true);
+        } else {
+            return original;
+        }
     }
 
     @Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "HEAD"))

@@ -32,6 +32,7 @@
   "mixins": [
     "enchantments.mixins.json"
   ],
+  "accessWidener": "enchantments.accesswidener",
   "depends": {
     "fabricloader": ">=0.15",
     "minecraft": "1.21",

@@ -1,12 +1,14 @@
 package gg.norisk.enchantments.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
 import gg.norisk.enchantments.impl.ColossalEnchantment;
 import gg.norisk.enchantments.impl.TrashEnchantment;
+import gg.norisk.satisfying.SatisfyingSuperStar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -39,7 +41,8 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Colossal
     @Shadow
     public abstract void attack(Entity entity);
 
-    @Shadow public abstract void playSound(SoundEvent soundEvent, float f, float g);
+    @Shadow
+    public abstract void playSound(SoundEvent soundEvent, float f, float g);
 
     @Unique
     private Direction lastSide;
@@ -89,6 +92,14 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Colossal
             return player;
         }
         return instance;
+    }
+
+    @ModifyReturnValue(
+            method = "getMovementSpeed",
+            at = @At("RETURN")
+    )
+    private float satisfying$getMovementSpeed(float original) {
+        return SatisfyingSuperStar.INSTANCE.modifyMovementSpeed((PlayerEntity) (Object) this, original);
     }
 
     @WrapOperation(

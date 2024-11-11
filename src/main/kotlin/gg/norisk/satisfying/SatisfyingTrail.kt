@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile
 import gg.norisk.emote.ext.playEmote
 import gg.norisk.enchantments.StupidEnchantments.toId
 import gg.norisk.enchantments.sound.SoundRegistry
+import kotlinx.coroutines.Job
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.AbstractClientPlayerEntity
@@ -22,6 +23,7 @@ import net.silkmc.silk.core.task.mcCoroutineTask
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args
 import java.awt.Color
 import java.util.*
+import java.util.function.Consumer
 import kotlin.random.Random
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
@@ -52,7 +54,12 @@ object SatisfyingTrail {
         }
     }
 
-    private fun spawnAfterImage(base: AbstractClientPlayerEntity, tickDelta: Float, fadeDuration: Duration) {
+    fun spawnAfterImage(
+        base: AbstractClientPlayerEntity,
+        tickDelta: Float,
+        fadeDuration: Duration,
+        consumer: Consumer<AfterImagePlayer>
+    ) {
         val copy = AfterImagePlayer(
             base.clientWorld, GameProfile(UUID.randomUUID(), base.gameProfile.name),
             base.age + tickDelta,
@@ -60,7 +67,7 @@ object SatisfyingTrail {
             base.limbAnimator.pos,
             base.headYaw,
             base.bodyYaw,
-            base.pitch, false
+            base.pitch
         )
         copy.setPosition(base.pos)
         copy.yaw = base.yaw
@@ -69,21 +76,23 @@ object SatisfyingTrail {
         copy.pitch = base.pitch
         copy.handSwingProgress = base.getHandSwingProgress(tickDelta)
         copy.resetFadeTime(fadeDuration)
+        consumer.accept(copy)
         mcCoroutineTask(sync = true, client = true, delay = 1.ticks) {
             base.clientWorld.addEntity(copy)
         }
     }
 
-    private fun spawnAfterImages(
+    fun spawnAfterImages(
         base: AbstractClientPlayerEntity,
         howOften: Long,
         period: Duration,
         delay: Duration,
-        fadeDuration: Duration
-    ) {
-        mcCoroutineTask(sync = true, client = true, howOften = howOften, period = period, delay = delay) {
+        fadeDuration: Duration,
+        consumer: Consumer<AfterImagePlayer> = Consumer {}
+    ): Job {
+        return mcCoroutineTask(sync = true, client = true, howOften = howOften, period = period, delay = delay) {
             val tickDelta = MinecraftClient.getInstance().renderTickCounter.getTickDelta(false)
-            spawnAfterImage(base, tickDelta, fadeDuration)
+            spawnAfterImage(base, tickDelta, fadeDuration, consumer)
         }
     }
 

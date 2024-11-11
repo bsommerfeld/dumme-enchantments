@@ -3,10 +3,7 @@ package gg.norisk.enchantments
 import gg.norisk.enchantments.command.EnchantmentsCommand
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.sound.SoundRegistry
-import gg.norisk.satisfying.SatisfyingChainReaction
-import gg.norisk.satisfying.SatisfyingCrush
-import gg.norisk.satisfying.SatisfyingExperience
-import gg.norisk.satisfying.SatisfyingTrail
+import gg.norisk.satisfying.*
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.ModInitializer
 import net.minecraft.util.Identifier
@@ -34,10 +31,12 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         RamEnchantment.initServer()
         SatisfyingExperience.initServer()
         SatisfyingChainReaction.initServer()
+        SatisfyingSuperStar.initServer()
     }
 
     override fun onInitializeClient() {
         logger.info("Helloooo Client")
+        SatisfyingSuperStar.initClient()
         SquishEnchantment.initClient()
         RollEnchantment.initClient()
         TrashEnchantment.initClient()

@@ -53,5 +53,10 @@
     "sounds": [
       "enchantments:hydraulic_press_start"
     ]
+  },
+  "star_sound": {
+    "sounds": [
+      "enchantments:star_sound"
+    ]
   }
 }

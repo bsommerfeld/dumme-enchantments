@@ -53,6 +53,10 @@ repositories {
     }
 }
 
+loom {
+    accessWidenerPath.set(file("src/main/resources/enchantments.accesswidener"))
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:1.21")
     mappings("net.fabricmc:yarn:1.21+build.9")
@@ -90,7 +94,7 @@ dependencies {
 tasks {
     compileKotlin {
         compilerOptions {
-            freeCompilerArgs = listOf("-Xjdk-release=${javaVersion.target}", "-Xskip-prerelease-check")
+            freeCompilerArgs = listOf("-Xjdk-release=${javaVersion.target}", "-Xskip-prerelease-check", "-Xcontext-receivers")
             jvmTarget.set(javaVersion)
         }
     }
