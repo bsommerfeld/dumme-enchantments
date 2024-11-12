@@ -14,7 +14,7 @@ import gg.norisk.enchantments.utils.Vec3dSerializer
 import kotlinx.serialization.Serializable
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.model.ModelPart
 import net.minecraft.client.model.ModelPart.Cuboid
@@ -27,6 +27,7 @@ import net.minecraft.client.render.entity.model.EntityModel
 import net.minecraft.client.render.entity.model.EntityModelLayers
 import net.minecraft.client.render.item.HeldItemRenderer
 import net.minecraft.client.util.math.MatrixStack
+import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.ExperienceOrbEntity
@@ -40,10 +41,12 @@ import net.minecraft.util.Hand
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.random.Random
+import net.silkmc.silk.commands.clientCommand
 import net.silkmc.silk.core.kotlin.ticks
 import net.silkmc.silk.core.task.mcCoroutineTask
 import net.silkmc.silk.network.packet.c2sPacket
 import org.joml.Vector3f
+import java.util.*
 
 object SatisfyingExperience {
     fun initServer() {
@@ -125,7 +128,17 @@ object SatisfyingExperience {
                 )
             }
         }
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment || MinecraftClient.getInstance().session.uuidOrNull == UUID.fromString("26a4fcde-de39-4ff0-8ea1-786582b7d8ee")) {
+            clientCommand("meingeheimertrailtest") {
+                runs {
+                    isEnabled = !isEnabled
+                }
+            }
+        }
     }
+
+    var isEnabled = false
 
     interface ModelPartExt {
         var `satisfying$name`: String
@@ -148,6 +161,9 @@ object SatisfyingExperience {
             headYaw: Float,
             headPitch: Float
         ) {
+            if (!isEnabled) {
+                if (entity.id != MinecraftClient.getInstance().player?.lastKilled) return
+            }
 
             // das modell ist an diesem zeitpunkt schon animiert und positioniert
             var current: Class<*> = this.contextModel::class.java
@@ -194,7 +210,7 @@ object SatisfyingExperience {
             // Set the position of each custom experience orb entity
             world.spawnEntity(ExperienceOrbEntity(world, particleX, particleY, particleZ, 1)?.apply {
                 isCustom = true
-                this.setVelocity(0.0,0.0,0.0)
+                this.setVelocity(0.0, 0.0, 0.0)
 
                 //this.amount = 1
                 setPosition(particleX, particleY, particleZ)
@@ -208,36 +224,33 @@ object SatisfyingExperience {
     fun renderParticleLine(
         start: Vec3d,
         end: Vec3d,
-        world: ServerWorld,
+        world: ClientWorld,
         particleEffect: ParticleEffect = DustParticleEffect(Vector3f(1f, 0f, 0f), 0.1f), //ParticleTypes.FLAME,
-        particleDensity: Int = 20,
+        particleDensity: Double = 0.01,
     ) {
-        // Erhalte den Spieler und die Welt
+        // Calculate the distance between start and end points
+        val totalDistance = start.distanceTo(end)
 
-        // Berechne den Abstand zwischen Start und Endpunkt
-        val deltaX = end.x - start.x
-        val deltaY = end.y - start.y
-        val deltaZ = end.z - start.z
+        // Calculate the direction vector between start and end, normalized
+        val directionX = (end.x - start.x) / totalDistance
+        val directionY = (end.y - start.y) / totalDistance
+        val directionZ = (end.z - start.z) / totalDistance
 
-        // Partikel entlang der Linie erzeugen
-        for (i in 0..particleDensity) {
-            // Interpoliert zwischen dem Start- und Endpunkt
-            val t = i / particleDensity.toDouble()
-            val particleX = start.x + deltaX * t
-            val particleY = start.y + deltaY * t
-            val particleZ = start.z + deltaZ * t
+        // Generate particles at intervals of distanceBetweenParticles
+        var currentDistance = 0.0
+        while (currentDistance <= totalDistance) {
+            // Calculate the current particle position along the line
+            val particleX = start.x + directionX * currentDistance
+            val particleY = start.y + directionY * currentDistance
+            val particleZ = start.z + directionZ * currentDistance
 
-            // Übersetze die Partikelposition relativ zur Kamera
-            val worldParticlePos = Vec3d(
-                particleX,
-                particleY,
-                particleZ,
+            // Set the position of each custom experience orb entity
+            world.addParticle(
+                particleEffect, particleX, particleY, particleZ, 0.0, 0.0, 0.0
             )
 
-            // Erstelle einen Partikel-Effekt
-            world.spawnParticles(
-                particleEffect, worldParticlePos.x, worldParticlePos.y, worldParticlePos.z, 1, 0.0, 0.0, 0.0, 0.0
-            )
+            // Increment the current distance by the fixed amount
+            currentDistance += particleDensity
         }
     }
 
@@ -311,10 +324,25 @@ object SatisfyingExperience {
             ).map { Vec3dWrapper(it) }
         }
 
-        if (entity.id == MinecraftClient.getInstance().player?.lastKilled) {
-            positionPacket.send(positions)
-            entity.discard()
+        val player = MinecraftClient.getInstance().player
+
+        if (isEnabled) {
+            positions.forEach { cuboidCorners ->
+                // Render lines for each cuboid's corner points
+                for (i in cuboidCorners.indices) {
+                    // Connect each corner point to the next, and loop back to the start at the end
+                    val start = cuboidCorners[i].vec3d
+                    val end = cuboidCorners[(i + 1) % cuboidCorners.size].vec3d
+                    renderParticleLine(start, end, player?.clientWorld ?: continue)
+                }
+            }
+        } else {
+            if (entity.id == player?.lastKilled) {
+                positionPacket.send(positions)
+                entity.discard()
+            }
         }
+
 
         matrices.pop()
     }
