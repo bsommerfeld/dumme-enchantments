@@ -5,6 +5,7 @@ import gg.norisk.emote.ext.playEmote
 import gg.norisk.enchantments.StupidEnchantments.toId
 import gg.norisk.enchantments.sound.SoundRegistry
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.AbstractClientPlayerEntity
@@ -13,11 +14,15 @@ import net.minecraft.client.network.PlayerListEntry
 import net.minecraft.client.util.SkinTextures
 import net.minecraft.client.world.ClientWorld
 import net.minecraft.entity.Entity
+import net.minecraft.entity.effect.StatusEffect
+import net.minecraft.entity.effect.StatusEffectCategory
+import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerModelPart
+import net.minecraft.potion.Potion
+import net.minecraft.registry.Registries
+import net.minecraft.registry.Registry
 import net.minecraft.sound.SoundCategory
-import net.silkmc.silk.commands.clientCommand
-import net.silkmc.silk.commands.player
 import net.silkmc.silk.core.kotlin.ticks
 import net.silkmc.silk.core.task.mcCoroutineTask
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args
@@ -31,28 +36,30 @@ import kotlin.time.Duration.Companion.seconds
 object SatisfyingTrail {
     fun initClient() {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment) return
-        clientCommand("satisfyingnichtausführen") {
-            literal("trail") {
-                argument<Long>("howOften") { howOften ->
-                    argument<Double>("period") { period ->
-                        argument<Double>("delay") { delay ->
-                            argument<Double>("fadeDuration") { fadeDuration ->
-                                runs {
-                                    spawnAfterImages(
-                                        this.source.player,
-                                        howOften(),
-                                        period().seconds,
-                                        delay().seconds,
-                                        fadeDuration().seconds
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
+
+    fun initServer() {
+        AFTER_IMAGE_EFFECT_REGISTRY
+        AFTER_IMAGE_POTION
+    }
+
+    val AFTER_IMAGE_EFFECT_REGISTRY = Registry.registerReference(
+        Registries.STATUS_EFFECT,
+        "after_image".toId(),
+        object : StatusEffect(StatusEffectCategory.BENEFICIAL, 0xCBCBCB) {
+        })
+    val AFTER_IMAGE_POTION = Registry.registerReference(
+        Registries.POTION, "after_image".toId(), Potion(
+            StatusEffectInstance(
+                AFTER_IMAGE_EFFECT_REGISTRY,
+                (20.seconds.inWholeMilliseconds / 50).toInt(),
+                0,
+                false,
+                false,
+                false
+            )
+        )
+    )
 
     fun spawnAfterImage(
         base: AbstractClientPlayerEntity,
@@ -99,6 +106,50 @@ object SatisfyingTrail {
     fun onTick(entity: Entity) {
         if (entity is AfterImagePlayer) {
             entity.noClip = true
+        } else {
+            if (entity.world.isClient && entity is AbstractClientPlayerEntity && entity.hasStatusEffect(
+                    AFTER_IMAGE_EFFECT_REGISTRY
+                )
+            ) {
+                val effect = entity.statusEffects.find { it.equals(AFTER_IMAGE_EFFECT_REGISTRY) } ?: return
+                when (effect.amplifier) {
+                    1 -> {
+                        if (entity.age.mod(5) == 0) {
+                            spawnAfterImage(
+                                entity,
+                                MinecraftClient.getInstance().renderTickCounter.getTickDelta(false),
+                                2.seconds
+                            ) {
+
+                            }
+                        }
+                    }
+
+                    2 -> {
+                        if (entity.age.mod(3) == 0) {
+                            spawnAfterImage(
+                                entity,
+                                MinecraftClient.getInstance().renderTickCounter.getTickDelta(false),
+                                2.seconds
+                            ) {
+                                it.canFade = false
+                            }
+                        }
+                    }
+
+                    else -> {
+                        if (entity.age.mod(10) == 0) {
+                            spawnAfterImage(
+                                entity,
+                                MinecraftClient.getInstance().renderTickCounter.getTickDelta(false),
+                                1.seconds
+                            ) {
+
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -137,13 +188,16 @@ object SatisfyingTrail {
 
         override fun tick() {
             super.tick()
+            if (!canFade && age > 1000) {
+                discard()
+            }
             if (getFadeValue() <= 0) {
                 discard()
             }
         }
 
         override fun canHit(): Boolean {
-            return false
+            return !canFade
         }
 
         fun getFadeValue(): Int {
@@ -195,6 +249,10 @@ object SatisfyingTrail {
             isFallen = true
             playEmote("emotes/domino.animation.json".toId())
             mcCoroutineTask(sync = true, client = true, delay = 0.06.seconds) {
+                if (clientWorld == null) {
+                    cancel()
+                    return@mcCoroutineTask
+                }
                 clientWorld.playSoundFromEntity(
                     MinecraftClient.getInstance().player,
                     this@AfterImagePlayer,
@@ -206,6 +264,10 @@ object SatisfyingTrail {
             }
             if (triggerNext) {
                 mcCoroutineTask(sync = true, client = true, delay = 0.08.seconds) {
+                    if (clientWorld == null) {
+                        cancel()
+                        return@mcCoroutineTask
+                    }
                     fallNextPiece()
                 }
             }

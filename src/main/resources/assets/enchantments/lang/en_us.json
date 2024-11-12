@@ -1,4 +1,10 @@
 {
   "effect.enchantments.super_star": "Super Star",
-  "item.minecraft.potion.effect.super_star": "Super Star"
+  "item.minecraft.potion.effect.super_star": "Super Star",
+  "item.minecraft.splash_potion.effect.super_star": "Super Star",
+  "item.minecraft.lingering_potion.effect.super_star": "Super Star",
+  "effect.enchantments.after_image": "After Image",
+  "item.minecraft.potion.effect.after_image": "After Image",
+  "item.minecraft.splash_potion.effect.after_image": "After Image",
+  "item.minecraft.lingering_potion.effect.after_image": "After Image"
 }

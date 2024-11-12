@@ -1,6 +1,7 @@
 package gg.norisk.enchantments
 
 import gg.norisk.enchantments.command.EnchantmentsCommand
+import gg.norisk.enchantments.command.SatisfyingCommand
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.sound.SoundRegistry
 import gg.norisk.satisfying.*
@@ -25,6 +26,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         HelicopterEnchantment.initServer()
         TrashEnchantment.initServer()
         EnchantmentsCommand.initServer()
+        SatisfyingCommand.initServer()
         MedusaEnchantment.initServer()
         BalloonEnchantment.initServer()
         AimBotEnchantment.initServer()
@@ -33,6 +35,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         SatisfyingChainReaction.initServer()
         SatisfyingSuperStar.initServer()
         SatisfyingBlockAnimation.initServer()
+        SatisfyingTrail.initServer()
     }
 
     override fun onInitializeClient() {

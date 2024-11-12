@@ -411,7 +411,7 @@ object EnchantmentsCommand {
     }
 
 
-    private fun RegistryKey<Enchantment>.getEntry(world: World): RegistryEntry<Enchantment> {
+    fun RegistryKey<Enchantment>.getEntry(world: World): RegistryEntry<Enchantment> {
         return world.registryManager.get(RegistryKeys.ENCHANTMENT).getEntry(this.value).get()
     }
 
