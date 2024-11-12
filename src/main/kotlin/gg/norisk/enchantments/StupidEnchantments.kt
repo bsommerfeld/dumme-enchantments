@@ -32,6 +32,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         SatisfyingExperience.initServer()
         SatisfyingChainReaction.initServer()
         SatisfyingSuperStar.initServer()
+        SatisfyingBlockAnimation.initServer()
     }
 
     override fun onInitializeClient() {
@@ -49,5 +50,6 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         SatisfyingTrail.initClient()
         SatisfyingExperience.initClient()
         SatisfyingCrush.initClient()
+        SatisfyingBlockAnimation.initClient()
     }
 }

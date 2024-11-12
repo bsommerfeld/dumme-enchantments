@@ -33,6 +33,7 @@ object EnchantmentRegistry {
     val circleShoot: RegistryKey<Enchantment> = of("circleshoot")
     val multiFishing: RegistryKey<Enchantment> = of("multifishing")
     val instantFishing: RegistryKey<Enchantment> = of("instantfishing")
+    val animation: RegistryKey<Enchantment> = of("animation")
 
     private fun of(name: String): RegistryKey<Enchantment> {
         return RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, name))
