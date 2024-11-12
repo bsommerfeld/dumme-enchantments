@@ -58,5 +58,10 @@
     "sounds": [
       "enchantments:star_sound"
     ]
+  },
+  "electricity": {
+    "sounds": [
+      "enchantments:electricity"
+    ]
   }
 }

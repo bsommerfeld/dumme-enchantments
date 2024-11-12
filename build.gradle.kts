@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "gg.norisk"
-version = "${minecraftVersion}-1.0.7"
+version = "${minecraftVersion}-1.0.9"
 
 repositories {
     mavenCentral()

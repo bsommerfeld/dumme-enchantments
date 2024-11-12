@@ -6,22 +6,39 @@ import gg.norisk.enchantments.EnchantmentRegistry.chainReaction
 import gg.norisk.enchantments.EnchantmentUtils.getLevel
 import gg.norisk.enchantments.EnchantmentUtils.sound
 import gg.norisk.enchantments.StupidEnchantments.MOD_ID
+import gg.norisk.enchantments.sound.SoundRegistry
 import gg.norisk.satisfying.SatisfyingArrowTrail.hasSatisfyingArrowTrail
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.ArrowEntity
 import net.minecraft.entity.projectile.ProjectileEntity
 import net.minecraft.item.Items
+import net.minecraft.particle.ParticleEffect
+import net.minecraft.particle.ParticleTypes
 import net.minecraft.server.world.ServerWorld
+import net.minecraft.sound.SoundCategory
 import net.minecraft.sound.SoundEvents
 import net.minecraft.util.math.Vec3d
 import net.silkmc.silk.core.event.EntityEvents
 
 object SatisfyingChainReaction {
     private const val SEARCH_RADIUS = 30.0  // Radius to search for the next target in blocks
+    val particles = mutableListOf<Pair<Long, Vec3d>>()
 
     fun initServer() {
+        ServerTickEvents.END_WORLD_TICK.register {
+            for ((index, pair) in particles.withIndex()) {
+                renderParticleLine(
+                    pair.second,
+                    particles.getOrNull(index + 1)?.second ?: continue,
+                    it
+                )
+            }
+            particles.removeIf { it.first < System.currentTimeMillis() - 5000 }
+        }
         EntityEvents.damageLivingEntity.listen { event ->
             val attacker = event.source.attacker
             val source = event.source.source
@@ -36,7 +53,17 @@ object SatisfyingChainReaction {
                 val launchedEntity = world.getEntityById(source.satisfyingChainReactionOwnerId)
                 val lastHitEntity = world.getEntityById(source.satisfyingLastChainReactionHitId)
                 if (lastHitEntity != null) {
-                    lastHitEntity.sound(SoundEvents.ENTITY_ARROW_HIT_PLAYER, 1f, 1f)
+                    world.playSound(
+                        null,
+                        lastHitEntity.pos.x,
+                        lastHitEntity.pos.y,
+                        lastHitEntity.pos.z,
+                        SoundRegistry.ELECTRICITY,
+                        SoundCategory.NEUTRAL,
+                        1f,
+                        2f
+                    )
+                    //lastHitEntity.sound(SoundEvents.ENTITY_ARROW_HIT_PLAYER, 1f, 1f)
                 }
 
                 triggerChainReaction(world, event.entity, launchedEntity, source)
@@ -69,6 +96,10 @@ object SatisfyingChainReaction {
     ) {
         // Mark the current target as hit
         hitEntities.add(currentTarget)
+        if (currentTarget !is PlayerEntity) {
+            currentTarget.kill()
+        }
+        particles.add(Pair(System.currentTimeMillis(), arrowEntity.pos))
 
         // Find the next closest target within the SEARCH_RADIUS, excluding already hit entities and the shooter
         val nextTarget = findNearestTarget(world, currentTarget, shooter, arrowEntity, hitEntities)
@@ -80,6 +111,40 @@ object SatisfyingChainReaction {
         // Recursively trigger the next chain reaction from the newly hit target
         // triggerChainReaction(world, nextTarget, shooter, hitEntities)
     }
+
+    fun renderParticleLine(
+        start: Vec3d,
+        end: Vec3d,
+        world: ServerWorld,
+        particleEffect: ParticleEffect = ParticleTypes.ELECTRIC_SPARK, //ParticleTypes.FLAME,
+        particleDensity: Double = 0.2,
+    ) {
+        // Calculate the distance between start and end points
+        val totalDistance = start.distanceTo(end)
+
+        // Calculate the direction vector between start and end, normalized
+        val directionX = (end.x - start.x) / totalDistance
+        val directionY = (end.y - start.y) / totalDistance
+        val directionZ = (end.z - start.z) / totalDistance
+
+        // Generate particles at intervals of distanceBetweenParticles
+        var currentDistance = 0.0
+        while (currentDistance <= totalDistance) {
+            // Calculate the current particle position along the line
+            val particleX = start.x + directionX * currentDistance
+            val particleY = start.y + directionY * currentDistance
+            val particleZ = start.z + directionZ * currentDistance
+
+            // Set the position of each custom experience orb entity
+            world.spawnParticles(
+                particleEffect, particleX, particleY, particleZ, 1, 0.0, 0.0, 0.0, 0.0
+            )
+
+            // Increment the current distance by the fixed amount
+            currentDistance += particleDensity
+        }
+    }
+
 
     private fun findNearestTarget(
         world: ServerWorld,
@@ -113,10 +178,12 @@ object SatisfyingChainReaction {
 
         // Set a speed multiplier based on distance, with a slight increase
         val baseSpeed = 1.5f
-        val speedMultiplier = 1.0f + if (distance > 15) distance * 0.05f else (distance * 0.005f)  // Adjust 0.05f to control the speed increase per unit distance
+        val speedMultiplier =
+            1.0f + if (distance > 15) distance * 0.05f else (distance * 0.005f)  // Adjust 0.05f to control the speed increase per unit distance
 
         // Create and configure the new arrow entity
-        val newArrow = ArrowEntity(world, from.x, from.y + from.standingEyeHeight / 2, from.z, Items.ARROW.defaultStack, null)
+        val newArrow =
+            ArrowEntity(world, from.x, from.y + from.standingEyeHeight / 2, from.z, Items.ARROW.defaultStack, null)
         newArrow.owner = shooter ?: from
         newArrow.satisfyingChainReactionOwnerId = arrowEntity.satisfyingChainReactionOwnerId
         newArrow.satisfyingLastChainReactionHitId = from.id

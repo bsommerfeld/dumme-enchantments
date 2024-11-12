@@ -183,13 +183,13 @@ object SatisfyingCommand {
             addEnchantment(Enchantments.INFINITY.getEntry(player.world), 1)
         })
 
-        player.inventory.setStack(4, itemStack(Items.BOW, 1) {
+        /*player.inventory.setStack(4, itemStack(Items.BOW, 1) {
             addEnchantment(chainReaction.getEntry(player.world), 1)
             addEnchantment(arrowTrail.getEntry(player.world), 1)
             addEnchantment(experience.getEntry(player.world), 1)
             addEnchantment(Enchantments.POWER.getEntry(player.world), 5)
             addEnchantment(Enchantments.INFINITY.getEntry(player.world), 1)
-        })
+        })*/
 
         player.inventory.setStack(1, itemStack(Items.ARROW, 1) {})
         player.inventory.setStack(8, itemStack(Items.IRON_GOLEM_SPAWN_EGG, 64) {})
