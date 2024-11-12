@@ -115,14 +115,14 @@ object SatisfyingCommand {
         player.inventory.setStack(
             0, createPotion(
                 AFTER_IMAGE_POTION, StatusEffectInstance(
-                    AFTER_IMAGE_EFFECT_REGISTRY, (20.seconds.inWholeMilliseconds / 50).toInt(), 0, false, false, false
+                    AFTER_IMAGE_EFFECT_REGISTRY, (10.seconds.inWholeMilliseconds / 50).toInt(), 0, false, false, false
                 )
             )
         )
         player.inventory.setStack(
             4, createPotion(
                 AFTER_IMAGE_POTION, StatusEffectInstance(
-                    AFTER_IMAGE_EFFECT_REGISTRY, (20.seconds.inWholeMilliseconds / 50).toInt(), 1, false, false, false
+                    AFTER_IMAGE_EFFECT_REGISTRY, (10.seconds.inWholeMilliseconds / 50).toInt(), 1, false, false, false
                 )
             )
         )

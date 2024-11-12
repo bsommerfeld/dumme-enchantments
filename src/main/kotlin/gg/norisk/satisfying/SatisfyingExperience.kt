@@ -173,7 +173,7 @@ object SatisfyingExperience {
         start: Vec3d,
         end: Vec3d,
         world: ServerWorld,
-        distanceBetweenParticles: Double = 0.2// Fixed distance between each particle
+        distanceBetweenParticles: Double = 0.3// Fixed distance between each particle
     ) {
         // Calculate the distance between start and end points
         val totalDistance = start.distanceTo(end)
