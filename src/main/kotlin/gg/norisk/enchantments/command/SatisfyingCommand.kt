@@ -2,7 +2,12 @@ package gg.norisk.enchantments.command
 
 import com.mojang.brigadier.context.CommandContext
 import gg.norisk.enchantments.EnchantmentRegistry.animation
+import gg.norisk.enchantments.EnchantmentRegistry.arrowTrail
+import gg.norisk.enchantments.EnchantmentRegistry.bouncy
+import gg.norisk.enchantments.EnchantmentRegistry.chainReaction
+import gg.norisk.enchantments.EnchantmentRegistry.circleShoot
 import gg.norisk.enchantments.EnchantmentRegistry.crush
+import gg.norisk.enchantments.EnchantmentRegistry.experience
 import gg.norisk.enchantments.EnchantmentRegistry.instantFishing
 import gg.norisk.enchantments.EnchantmentRegistry.multiFishing
 import gg.norisk.satisfying.SatisfyingSuperStar
@@ -11,6 +16,7 @@ import gg.norisk.satisfying.SatisfyingTrail.AFTER_IMAGE_POTION
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.PotionContentsComponent
 import net.minecraft.enchantment.Enchantment
+import net.minecraft.enchantment.Enchantments
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -43,31 +49,49 @@ object SatisfyingCommand {
             literal("1") {
                 runs {
                     this.default()
-                    this.superstar()
+                    this.fishing()
                 }
             }
             literal("2") {
                 runs {
                     this.default()
-                    this.blockAnimation()
+                    this.hydraulic()
                 }
             }
             literal("3") {
                 runs {
                     this.default()
-                    this.fishing()
+                    this.superstar()
                 }
             }
             literal("4") {
                 runs {
                     this.default()
-                    this.hydraulic()
+                    this.xp()
                 }
             }
             literal("5") {
                 runs {
                     this.default()
+                    this.blockAnimation()
+                }
+            }
+            literal("6") {
+                runs {
+                    this.default()
+                    this.chainreaction()
+                }
+            }
+            literal("7") {
+                runs {
+                    this.default()
                     this.afterimage()
+                }
+            }
+            literal("8") {
+                runs {
+                    this.default()
+                    this.bowforms()
                 }
             }
         }
@@ -119,6 +143,77 @@ object SatisfyingCommand {
                 "lauf so als würdest du curve fever spielen, geh dann wieder an den anfang und schlag den 1. spieler".literal
             )
         })
+    }
+
+    private fun <S : ServerCommandSource> CommandContext<S>.bowforms() {
+        val player = this.source.playerOrThrow
+        player.changeGameMode(GameMode.CREATIVE)
+
+        player.inventory.setStack(0, itemStack(Items.BOW, 1) {
+            addEnchantment(circleShoot.getEntry(player.world), 1)
+            addEnchantment(bouncy.getEntry(player.world), 1)
+            addEnchantment(arrowTrail.getEntry(player.world), 1)
+        })
+        player.inventory.setStack(1, itemStack(Items.BOW, 1) {
+            addEnchantment(circleShoot.getEntry(player.world), 2)
+            addEnchantment(bouncy.getEntry(player.world), 1)
+            addEnchantment(arrowTrail.getEntry(player.world), 1)
+        })
+        player.inventory.setStack(3, itemStack(Items.BOW, 1) {
+            addEnchantment(circleShoot.getEntry(player.world), 3)
+            addEnchantment(bouncy.getEntry(player.world), 1)
+            addEnchantment(arrowTrail.getEntry(player.world), 1)
+        })
+
+        player.inventory.setStack(8, itemStack(Items.ARROW, 1) {})
+
+        player.sendMessage(literalText {
+            text("das hier musst du nicht testen kannst auch gehen (danke nochmal!!!)") {}
+            italic = true
+            color = Color.LIGHT_GRAY.rgb
+        })
+    }
+
+    private fun <S : ServerCommandSource> CommandContext<S>.chainreaction() {
+        val player = this.source.playerOrThrow
+        player.changeGameMode(GameMode.CREATIVE)
+
+        player.inventory.setStack(0, itemStack(Items.BOW, 1) {
+            addEnchantment(chainReaction.getEntry(player.world), 1)
+            addEnchantment(Enchantments.INFINITY.getEntry(player.world), 1)
+        })
+
+        player.inventory.setStack(4, itemStack(Items.BOW, 1) {
+            addEnchantment(chainReaction.getEntry(player.world), 1)
+            addEnchantment(arrowTrail.getEntry(player.world), 1)
+            addEnchantment(experience.getEntry(player.world), 1)
+            addEnchantment(Enchantments.POWER.getEntry(player.world), 5)
+            addEnchantment(Enchantments.INFINITY.getEntry(player.world), 1)
+        })
+
+        player.inventory.setStack(1, itemStack(Items.ARROW, 1) {})
+        player.inventory.setStack(8, itemStack(Items.IRON_GOLEM_SPAWN_EGG, 64) {})
+
+        player.sendMessage(literalText {
+            text("platziere in ~5 blöcken abstand ein paar iron golems") {}
+            italic = true
+            color = Color.LIGHT_GRAY.rgb
+        })
+    }
+
+
+    private fun <S : ServerCommandSource> CommandContext<S>.xp() {
+        val player = this.source.playerOrThrow
+
+        player.inventory.setStack(0, itemStack(Items.BOW, 1) {
+            addEnchantment(experience.getEntry(player.world), 1)
+            addEnchantment(Enchantments.POWER.getEntry(player.world), 5)
+            addEnchantment(Enchantments.INFINITY.getEntry(player.world), 1)
+        })
+        player.inventory.setStack(1, itemStack(Items.ARROW, 1) {})
+        player.giveItemStack(itemStack(Items.PIG_SPAWN_EGG, 64) {})
+        player.giveItemStack(itemStack(Items.HUSK_SPAWN_EGG, 64) {})
+        player.giveItemStack(itemStack(Items.IRON_GOLEM_SPAWN_EGG, 64) {})
     }
 
     private fun <S : ServerCommandSource> CommandContext<S>.hydraulic() {
@@ -175,7 +270,7 @@ object SatisfyingCommand {
     private fun <S : ServerCommandSource> CommandContext<S>.superstar() {
         val player = this.source.playerOrThrow
 
-        player.giveItemStack(itemStack(Items.PIG_SPAWN_EGG, 64) {})
+        player.giveItemStack(itemStack(Items.IRON_GOLEM_SPAWN_EGG, 64) {})
         player.giveItemStack(itemStack(Items.POTION) {
             setPotion(SatisfyingSuperStar.SUPER_STAR_POTION)
         })
@@ -197,6 +292,7 @@ object SatisfyingCommand {
         val server = this.source.server
         world.gameRules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server)
         world.gameRules.get(GameRules.DO_WEATHER_CYCLE).set(false, server)
+        world.gameRules.get(GameRules.ANNOUNCE_ADVANCEMENTS).set(false, server)
         world.timeOfDay = 6000
         world.resetWeather()
         val player = this.source.playerOrThrow

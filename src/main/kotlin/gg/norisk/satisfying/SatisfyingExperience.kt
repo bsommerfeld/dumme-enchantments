@@ -55,7 +55,7 @@ object SatisfyingExperience {
             attacker.lastKilled = killed.id
         }
         positionPacket.receiveOnServer { packet, context ->
-            println("Position")
+            //println("Position")
             mcCoroutineTask(sync = true, client = false) {
                 packet.forEach { cuboidCorners ->
                     // Render lines for each cuboid's corner points

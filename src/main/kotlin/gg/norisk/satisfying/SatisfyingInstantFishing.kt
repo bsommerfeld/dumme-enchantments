@@ -20,7 +20,7 @@ object SatisfyingInstantFishing {
         entity: FishingBobberEntity
     ) {
         val mainStack = playerEntity.getStackInHand(Hand.MAIN_HAND)
-        println("MainStack $mainStack ${playerEntity.activeHand}")
+        //println("MainStack $mainStack ${playerEntity.activeHand}")
         instantFishing.getLevel(mainStack) ?: return
         entity.isInstantFishing = true
     }
