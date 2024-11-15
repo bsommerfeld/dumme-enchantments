@@ -4,6 +4,8 @@ import com.mojang.authlib.GameProfile
 import gg.norisk.emote.ext.playEmote
 import gg.norisk.enchantments.StupidEnchantments.toId
 import gg.norisk.enchantments.sound.SoundRegistry
+import gg.norisk.satisfying.SatisfyingFishing.fishingHookOwnerId
+import gg.norisk.utils.DevUtils.uniqueId
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import net.fabricmc.loader.api.FabricLoader
@@ -74,8 +76,10 @@ object SatisfyingTrail {
             base.limbAnimator.pos,
             base.headYaw,
             base.bodyYaw,
-            base.pitch
+            base.pitch,
+            base.uniqueId
         )
+        copy.fakeSkinTextures = base.skinTextures
         copy.setPosition(base.pos)
         copy.yaw = base.yaw
         copy.headYaw = base.headYaw
@@ -172,6 +176,7 @@ object SatisfyingTrail {
         val copiedHeadYaw: Float,
         val copiedBodyYaw: Float,
         val copiedPitch: Float,
+        var owner: UUID,
         var canFade: Boolean = true,
     ) : OtherClientPlayerEntity(
         clientWorld,
@@ -225,7 +230,12 @@ object SatisfyingTrail {
             return fakeSkinTextures ?: super.getSkinTextures()
         }
 
-        override fun isPartVisible(modelPart: PlayerModelPart?): Boolean {
+        override fun isPartVisible(modelPart: PlayerModelPart): Boolean {
+            if (modelPart == PlayerModelPart.CAPE) return false
+            val owner = world.getPlayerByUuid(owner)
+            if (owner != null) {
+                return owner.isPartVisible(modelPart)
+            }
             return true
         }
 
