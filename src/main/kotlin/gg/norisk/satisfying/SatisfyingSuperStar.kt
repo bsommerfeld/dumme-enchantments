@@ -9,6 +9,7 @@ import gg.norisk.enchantments.StupidEnchantments.logger
 import gg.norisk.enchantments.StupidEnchantments.toId
 import gg.norisk.enchantments.sound.SoundRegistry
 import gg.norisk.satisfying.SatisfyingTrail.spawnAfterImage
+import gg.norisk.satisfying.entity.AfterImagePlayer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.AbstractClientPlayerEntity
@@ -51,17 +52,22 @@ import kotlin.time.Duration.Companion.seconds
 
 @Suppress("INACCESSIBLE_TYPE")
 object SatisfyingSuperStar {
-    val ENTITY_TRANSLUCENT_CHROMA: ManagedCoreShader = ShaderEffectManager.getInstance().manageCoreShader(
-        "rendertype_entity_translucent".toId(), VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL
-    )
-    val ENTITY_SOLID_CHROMA: ManagedCoreShader = ShaderEffectManager.getInstance().manageCoreShader(
-        "rendertype_entity_solid".toId(), VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL
-    )
+    val ENTITY_TRANSLUCENT_CHROMA: ManagedCoreShader by lazy {
+        ShaderEffectManager.getInstance().manageCoreShader(
+            "rendertype_entity_translucent".toId(), VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL
+        )
+    }
+    val ENTITY_SOLID_CHROMA: ManagedCoreShader by lazy {
+        ShaderEffectManager.getInstance().manageCoreShader(
+            "rendertype_entity_solid".toId(), VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL
+        )
+    }
 
-    val ENTITY_TRANSLUCENT: BiFunction<Identifier, Boolean, RenderLayer> =
+    val ENTITY_TRANSLUCENT: BiFunction<Identifier, Boolean, RenderLayer> by lazy {
         Util.memoize { identifier: Identifier, boolean_: Boolean ->
             val multiPhaseParameters =
-                MultiPhaseParameters.builder().program(RenderPhase.ShaderProgram(ENTITY_TRANSLUCENT_CHROMA::getProgram))
+                MultiPhaseParameters.builder()
+                    .program(RenderPhase.ShaderProgram(ENTITY_TRANSLUCENT_CHROMA::getProgram))
                     .texture(RenderPhase.Texture(identifier, false, false))
                     .transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY).cull(RenderPhase.DISABLE_CULLING)
                     .lightmap(RenderPhase.ENABLE_LIGHTMAP).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).build(boolean_)
@@ -75,26 +81,31 @@ object SatisfyingSuperStar {
                 multiPhaseParameters
             )
         }
+    }
 
 
-    val ENTITY_SOLID: Function<Identifier, RenderLayer> = Util.memoize { identifier: Identifier ->
-        val multiPhaseParameters =
-            MultiPhaseParameters.builder().program(RenderPhase.ShaderProgram(ENTITY_SOLID_CHROMA::getProgram))
-                .texture(RenderPhase.Texture(identifier, false, false)).transparency(RenderPhase.NO_TRANSPARENCY)
-                .lightmap(RenderPhase.ENABLE_LIGHTMAP).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).build(true)
-        RenderLayer.of(
-            "entity_solid",
-            VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
-            DrawMode.QUADS,
-            1536,
-            true,
-            false,
-            multiPhaseParameters
-        )
+    val ENTITY_SOLID: Function<Identifier, RenderLayer> by lazy {
+        Util.memoize { identifier: Identifier ->
+            val multiPhaseParameters =
+                MultiPhaseParameters.builder().program(RenderPhase.ShaderProgram(ENTITY_SOLID_CHROMA::getProgram))
+                    .texture(RenderPhase.Texture(identifier, false, false)).transparency(RenderPhase.NO_TRANSPARENCY)
+                    .lightmap(RenderPhase.ENABLE_LIGHTMAP).overlay(RenderPhase.ENABLE_OVERLAY_COLOR).build(true)
+            RenderLayer.of(
+                "entity_solid",
+                VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
+                DrawMode.QUADS,
+                1536,
+                true,
+                false,
+                multiPhaseParameters
+            )
+        }
     }
 
     fun Entity.onTick() {
-        if (this is SatisfyingTrail.AfterImagePlayer) return
+        if (world.isClient) {
+            if (this is AfterImagePlayer) return
+        }
         if (this !is LivingEntity) return
         if (!world.isClient) {
             if (hasStatusEffect(SUPER_STAR_EFFECT_REGISTRY)) {
@@ -208,7 +219,7 @@ object SatisfyingSuperStar {
         syncedValueChangeEvent.listen { event ->
             if (event.key != "$MOD_ID:isSatisfyingSuperMario") return@listen
             val player = event.entity as? AbstractClientPlayerEntity? ?: return@listen
-            if (player is SatisfyingTrail.AfterImagePlayer) return@listen
+            if (player is AfterImagePlayer) return@listen
             if (player.isSatisfyingSuperMario) {
                 MinecraftClient.getInstance().soundManager.play(SuperStarSoundInstance(player))
             } else {
