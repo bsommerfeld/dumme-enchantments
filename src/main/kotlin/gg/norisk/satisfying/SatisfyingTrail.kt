@@ -5,6 +5,8 @@ import gg.norisk.enchantments.StupidEnchantments.toId
 import gg.norisk.satisfying.entity.AfterImagePlayer
 import gg.norisk.utils.DevUtils.uniqueId
 import kotlinx.coroutines.Job
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.AbstractClientPlayerEntity
@@ -52,6 +54,7 @@ object SatisfyingTrail {
         )
     )
 
+    @Environment(EnvType.CLIENT)
     fun spawnAfterImage(
         base: AbstractClientPlayerEntity,
         tickDelta: Float,
@@ -82,6 +85,7 @@ object SatisfyingTrail {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     fun spawnAfterImages(
         base: AbstractClientPlayerEntity,
         howOften: Long,
@@ -146,6 +150,7 @@ object SatisfyingTrail {
         }
     }
 
+    @Environment(EnvType.CLIENT)
     fun <T> modifyAlpha(
         args: Args,
         livingEntity: T,
