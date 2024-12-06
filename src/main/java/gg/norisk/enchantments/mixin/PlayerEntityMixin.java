@@ -2,8 +2,6 @@ package gg.norisk.enchantments.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
 import gg.norisk.enchantments.impl.ColossalEnchantment;
@@ -100,12 +98,5 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Colossal
     )
     private float satisfying$getMovementSpeed(float original) {
         return SatisfyingSuperStar.INSTANCE.modifyMovementSpeed((PlayerEntity) (Object) this, original);
-    }
-
-    @WrapOperation(
-            method = "attack",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V")
-    )
-    private void stupid$invertedKnockback(LivingEntity instance, double d, double e, double f, Operation<Void> original) {
     }
 }
