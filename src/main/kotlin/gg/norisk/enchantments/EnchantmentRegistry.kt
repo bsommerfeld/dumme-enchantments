@@ -17,6 +17,7 @@ object EnchantmentRegistry {
     val bouncy: RegistryKey<Enchantment> = of("bouncy")
     val verification: RegistryKey<Enchantment> = of("verification")
     val helicopter: RegistryKey<Enchantment> = of("helicopter")
+    val helicopterV2: RegistryKey<Enchantment> = of("helicopterv2")
     val trashEnchantment: RegistryKey<Enchantment> = of("trash")
     val colossal: RegistryKey<Enchantment> = of("colossal")
     val rolling: RegistryKey<Enchantment> = of("rolling")

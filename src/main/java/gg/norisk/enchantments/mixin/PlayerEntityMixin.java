@@ -1,32 +1,27 @@
 package gg.norisk.enchantments.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
-//import gg.norisk.enchantments.impl.ColossalEnchantment;
-//import gg.norisk.enchantments.impl.TrashEnchantment;
-//import gg.norisk.satisfying.SatisfyingSuperStar;
+import gg.norisk.enchantments.impl.HelicopterEnchantmentV2;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
@@ -90,6 +85,13 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             return player;
         }
         return instance;
+    }
+
+    @Inject(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isSwimming()Z"), cancellable = true)
+    private void helicopterv2$movement(Vec3d movementInput, CallbackInfo ci) {
+        if (HelicopterEnchantmentV2.INSTANCE.isHelicopterFlying(this)) {
+            HelicopterEnchantmentV2.INSTANCE.handleHelicopterTravel((PlayerEntity) (Object)this, movementInput, ci);
+        }
     }
 
     /*@ModifyReturnValue(

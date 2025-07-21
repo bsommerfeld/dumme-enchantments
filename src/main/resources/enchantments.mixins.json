@@ -59,6 +59,8 @@
     "client.satisfying.LivingEntityRendererMixin",
     "client.satisfying.ModelPartDataMixin",
     "client.satisfying.ModelPartMixin",
-    "client.satisfying.PlayerEntityRendererMixin"
+    "client.satisfying.PlayerEntityRendererMixin",
+    "helicopterv2.CameraMixin",
+    "helicopterv2.PlayerEntityModelMixin"
   ]
 }

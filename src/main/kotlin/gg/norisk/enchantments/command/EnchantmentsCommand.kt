@@ -411,11 +411,10 @@ object EnchantmentsCommand {
 
 
     fun RegistryKey<Enchantment>.getEntry(world: World): RegistryEntry<Enchantment> {
-        TODO("1.21.5 Port")
-        //return world.registryManager.get(RegistryKeys.ENCHANTMENT).getEntry(this.value).get()
+        return world.registryManager.getOrThrow(RegistryKeys.ENCHANTMENT).getOrThrow(this)
     }
 
-    private fun <S : ServerCommandSource> CommandContext<S>.default() {
+    fun <S : ServerCommandSource> CommandContext<S>.default() {
         val world = this.source.world
         val server = this.source.server
         world.gameRules.get(GameRules.DO_DAYLIGHT_CYCLE).set(false, server)

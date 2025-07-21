@@ -1,29 +1,30 @@
 package gg.norisk.enchantments.mixin.client;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-//import gg.norisk.enchantments.impl.BalloonEnchantment;
-//import gg.norisk.enchantments.impl.MedusaEnchantment;
-//import gg.norisk.enchantments.impl.SquishEnchantment;
-//import gg.norisk.satisfying.SatisfyingCrush;
-//import gg.norisk.satisfying.SatisfyingSuperStar;
-import net.minecraft.client.render.RenderLayer;
+import gg.norisk.enchantments.impl.HelicopterEnchantmentV2;
+import me.x150.geckoAnimLib.core.ModelPartTransform;
+import me.x150.geckoAnimLib.core.PlayerRendererDuck;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
+import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
+import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(LivingEntityRenderer.class)
-public abstract class LivingEntityRendererMixin {
+public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extends LivingEntityRenderState, M extends EntityModel<? super S>>
+        extends EntityRenderer<T, S>
+        implements FeatureRendererContext<S, M> {
+    protected LivingEntityRendererMixin(EntityRendererFactory.Context context) {
+        super(context);
+    }
     /*@Inject(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/LivingEntityRenderer;scale(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/client/util/math/MatrixStack;F)V", shift = At.Shift.AFTER))
     private void afterScale(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         SquishEnchantment.INSTANCE.handleSquishRendering(livingEntity, matrixStack);
@@ -142,4 +143,12 @@ public abstract class LivingEntityRendererMixin {
             return original;
         }
     }*/
+
+
+    @ModifyArgs(method = "render(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;III)V"))
+    void raa(Args args, S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+        if (this instanceof PlayerRendererDuck pr) {
+            HelicopterEnchantmentV2.INSTANCE.handleForwardRotation(args, livingEntityRenderState, matrixStack, vertexConsumerProvider, i);
+        }
+    }
 }

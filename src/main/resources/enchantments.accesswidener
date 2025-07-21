@@ -1,5 +1,8 @@
 accessWidener	v1	named
 accessible class net/minecraft/client/render/RenderLayer$MultiPhaseParameters
 accessible class net/minecraft/client/render/RenderPhase$Texturing
-accessible class net/minecraft/client/render/RenderPhase$ShaderProgram
+#accessible class net/minecraft/client/render/RenderPhase$ShaderProgram
 accessible class net/minecraft/client/render/RenderPhase$Texture
+accessible method net/minecraft/entity/LivingEntity calcGlidingVelocity (Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
+accessible method net/minecraft/entity/LivingEntity checkGlidingCollision (DD)V
+accessible method net/minecraft/entity/LivingEntity travelMidAir (Lnet/minecraft/util/math/Vec3d;)V
