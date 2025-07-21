@@ -32,20 +32,20 @@ object SlipperyEnchantment {
     }
 
     fun initClient() {
-        LivingEntityFeatureRendererRegistrationCallback.EVENT.register { entityType, entityRenderer, registrationHelper, context ->
-            val modelPart = EntityModelLayers.getLayers().toList()
-                .firstOrNull { it.id.path == entityType.untranslatedName.lowercase() }
-            if (modelPart != null) {
-                val model = context.getPart(modelPart)
-                registrationHelper.register(
-                    SlipperyBlockFeatureRenderer(
-                        entityRenderer as FeatureRendererContext<LivingEntity, EntityModel<LivingEntity>>,
-                        context.heldItemRenderer,
-                        model
+            LivingEntityFeatureRendererRegistrationCallback.EVENT.register { entityType, entityRenderer, registrationHelper, context ->
+                val modelPart = EntityModelLayers.getLayers().toList()
+                    .firstOrNull { it.id.path == entityType.untranslatedName.lowercase() }
+                if (modelPart != null) {
+                    val model = context.getPart(modelPart)
+                    registrationHelper.register(
+                        SlipperyBlockFeatureRenderer(
+                            entityRenderer as FeatureRendererContext<LivingEntity, EntityModel<LivingEntity>>,
+                            context.heldItemRenderer,
+                            model
+                        )
                     )
-                )
+                }
             }
-        }
     }
 
     fun applyStepSound(instance: Entity, soundEvent: SoundEvent, f: Float, g: Float, original: Operation<Void>): Boolean {
