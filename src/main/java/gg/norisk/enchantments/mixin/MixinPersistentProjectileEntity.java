@@ -3,8 +3,8 @@ package gg.norisk.enchantments.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import gg.norisk.satisfying.SatisfyingArrowTrail;
-import gg.norisk.satisfying.SatisfyingTrail;
+//import gg.norisk.satisfying.SatisfyingArrowTrail;
+//import gg.norisk.satisfying.SatisfyingTrail;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.particle.ParticleEffect;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PersistentProjectileEntity.class)
 public class MixinPersistentProjectileEntity {
-    @ModifyExpressionValue(
+    /*@ModifyExpressionValue(
             method = "tick",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;isCritical()Z")
     )
@@ -32,5 +32,5 @@ public class MixinPersistentProjectileEntity {
         } else {
             original.call(instance, particleEffect, d, e, f, g, h, i);
         }
-    }
+    }*/
 }

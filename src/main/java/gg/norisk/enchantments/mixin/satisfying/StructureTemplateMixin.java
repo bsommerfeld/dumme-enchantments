@@ -3,7 +3,7 @@ package gg.norisk.enchantments.mixin.satisfying;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import gg.norisk.enchantments.utils.Animation;
-import gg.norisk.satisfying.SatisfyingBlockAnimation;
+//import gg.norisk.satisfying.SatisfyingBlockAnimation;
 import net.minecraft.block.BlockState;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
@@ -23,12 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(StructureTemplate.class)
-public abstract class StructureTemplateMixin implements SatisfyingBlockAnimation.StructureTemplateExt {
+public abstract class StructureTemplateMixin {
     @Unique
     private Animation.Easing satisfyingEasing;
     @Unique
     private Duration duration;
-    @Unique
+    /*@Unique
     private final List<SatisfyingBlockAnimation.BlockPlacement> blocks = new ArrayList<>();
 
     @WrapOperation(method = "place", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/ServerWorldAccess;setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z", ordinal = 1))
@@ -67,5 +67,5 @@ public abstract class StructureTemplateMixin implements SatisfyingBlockAnimation
     @Override
     public List<SatisfyingBlockAnimation.BlockPlacement> getSatisfying$blocks() {
         return blocks;
-    }
+    }*/
 }

@@ -2,7 +2,7 @@ package gg.norisk.enchantments.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
-import gg.norisk.enchantments.impl.ColossalEnchantment;
+//import gg.norisk.enchantments.impl.ColossalEnchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,11 +18,11 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
         super(world, blockPos, f, gameProfile);
     }
 
-    @ModifyReturnValue(
+    /*@ModifyReturnValue(
             method = "getDamageAgainst",
             at = @At("RETURN")
     )
     private float stupid$colossalDamage(float original, Entity entity, float f, DamageSource damageSource) {
         return ColossalEnchantment.INSTANCE.multiplyDamage(original, entity, f, damageSource, (ServerPlayerEntity) (Object) this);
-    }
+    }*/
 }

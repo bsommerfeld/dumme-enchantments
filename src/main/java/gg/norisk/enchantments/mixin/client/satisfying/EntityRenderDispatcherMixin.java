@@ -1,7 +1,7 @@
 package gg.norisk.enchantments.mixin.client.satisfying;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import gg.norisk.satisfying.SatisfyingExperience;
+//import gg.norisk.satisfying.SatisfyingExperience;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
-    @WrapWithCondition(
+    /*@WrapWithCondition(
             method = "render",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/EntityRenderDispatcher;renderShadow(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/entity/Entity;FFLnet/minecraft/world/WorldView;F)V")
     )
@@ -23,5 +23,5 @@ public abstract class EntityRenderDispatcherMixin {
             return !SatisfyingExperience.INSTANCE.isCustom(exp);
         }
         return true;
-    }
+    }*/
 }

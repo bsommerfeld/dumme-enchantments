@@ -10,9 +10,9 @@ import gg.norisk.enchantments.EnchantmentRegistry.crush
 import gg.norisk.enchantments.EnchantmentRegistry.experience
 import gg.norisk.enchantments.EnchantmentRegistry.instantFishing
 import gg.norisk.enchantments.EnchantmentRegistry.multiFishing
-import gg.norisk.satisfying.SatisfyingSuperStar
-import gg.norisk.satisfying.SatisfyingTrail.AFTER_IMAGE_EFFECT_REGISTRY
-import gg.norisk.satisfying.SatisfyingTrail.AFTER_IMAGE_POTION
+//import gg.norisk.satisfying.SatisfyingSuperStar
+//import gg.norisk.satisfying.SatisfyingTrail.AFTER_IMAGE_EFFECT_REGISTRY
+//import gg.norisk.satisfying.SatisfyingTrail.AFTER_IMAGE_POTION
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.component.type.PotionContentsComponent
 import net.minecraft.enchantment.Enchantment
@@ -97,7 +97,7 @@ object SatisfyingCommand {
         }
     }
 
-    private fun createPotion(
+    /*private fun createPotion(
         registryEntry: RegistryEntry<Potion>, statusEffectInstance: StatusEffectInstance, item: Item = Items.POTION
     ): ItemStack {
         val itemStack = ItemStack(item)
@@ -107,12 +107,12 @@ object SatisfyingCommand {
             )
         )
         return itemStack
-    }
+    }*/
 
     private fun <S : ServerCommandSource> CommandContext<S>.afterimage() {
         val player = this.source.playerOrThrow
 
-        player.inventory.setStack(
+        /*player.inventory.setStack(
             0, createPotion(
                 AFTER_IMAGE_POTION, StatusEffectInstance(
                     AFTER_IMAGE_EFFECT_REGISTRY, (10.seconds.inWholeMilliseconds / 50).toInt(), 0, false, false, false
@@ -142,7 +142,7 @@ object SatisfyingCommand {
                 HoverEvent.Action.SHOW_TEXT,
                 "lauf so als würdest du curve fever spielen, geh dann wieder an den anfang und schlag den 1. spieler".literal
             )
-        })
+        })*/
     }
 
     private fun <S : ServerCommandSource> CommandContext<S>.bowforms() {
@@ -254,7 +254,7 @@ object SatisfyingCommand {
             addEnchantment(animation.getEntry(player.world), 1)
         })
 
-        player.sendMessage(literalText {
+        /*player.sendMessage(literalText {
             text("bau irgendwas ab und danach schau richtung osten und") {}
             italic = true
             color = Color.LIGHT_GRAY.rgb
@@ -264,16 +264,16 @@ object SatisfyingCommand {
                     "/satisfying place minecraft:village/plains/houses/plains_small_house_1 BOUNCE_OUT 0.3"
                 )
             }
-        })
+        })*/
     }
 
     private fun <S : ServerCommandSource> CommandContext<S>.superstar() {
         val player = this.source.playerOrThrow
 
         player.giveItemStack(itemStack(Items.IRON_GOLEM_SPAWN_EGG, 64) {})
-        player.giveItemStack(itemStack(Items.POTION) {
+        /*player.giveItemStack(itemStack(Items.POTION) {
             setPotion(SatisfyingSuperStar.SUPER_STAR_POTION)
-        })
+        })*/
 
         player.sendMessage(literalText {
             text("Platziere mobs, geh F5 und trink die Potion") {
@@ -284,7 +284,7 @@ object SatisfyingCommand {
     }
 
     private fun RegistryKey<Enchantment>.getEntry(world: World): RegistryEntry<Enchantment> {
-        return world.registryManager.get(RegistryKeys.ENCHANTMENT).getEntry(this.value).get()
+        TODO("1.21.5 Port")
     }
 
     private fun <S : ServerCommandSource> CommandContext<S>.default() {

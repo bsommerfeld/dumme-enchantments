@@ -187,7 +187,7 @@ object AimBotEnchantment {
         }
     }
 
-    fun <T : PersistentProjectileEntity> ProjectileEntityRenderer<T>.handleRendering(
+    /*fun <T : PersistentProjectileEntity> ProjectileEntityRenderer<T>.handleRendering(
         persistentProjectileEntity: T,
         f: Float,
         g: Float,
@@ -243,5 +243,5 @@ object AimBotEnchantment {
 
         matrixStack.pop()
         return true
-    }
+    }*/
 }

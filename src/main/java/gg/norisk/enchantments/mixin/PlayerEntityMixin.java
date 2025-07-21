@@ -4,9 +4,9 @@ import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
-import gg.norisk.enchantments.impl.ColossalEnchantment;
-import gg.norisk.enchantments.impl.TrashEnchantment;
-import gg.norisk.satisfying.SatisfyingSuperStar;
+//import gg.norisk.enchantments.impl.ColossalEnchantment;
+//import gg.norisk.enchantments.impl.TrashEnchantment;
+//import gg.norisk.satisfying.SatisfyingSuperStar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity implements ColossalEnchantment.ColossalPlayer {
+public abstract class PlayerEntityMixin extends LivingEntity {
     @Shadow
     public abstract ActionResult interact(Entity entity, Hand hand);
 
@@ -51,7 +51,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Colossal
         super(entityType, world);
     }
 
-    @Inject(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isClient:Z"), cancellable = true)
+    /*@Inject(method = "dropItem(Lnet/minecraft/item/ItemStack;ZZ)Lnet/minecraft/entity/ItemEntity;", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isClient:Z"), cancellable = true)
     private void dropItemInjection(ItemStack itemStack, boolean bl, boolean bl2, CallbackInfoReturnable<ItemEntity> cir) {
         TrashEnchantment.INSTANCE.applyTrash((PlayerEntity) ((Object) this), itemStack, bl, bl2, cir);
     }
@@ -65,7 +65,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Colossal
     @Override
     public Direction getStupid_lastSide() {
         return lastSide;
-    }
+    }*/
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;handleAttack(Lnet/minecraft/entity/Entity;)Z"), cancellable = true)
     private void stupid$invertAttack(Entity entity, CallbackInfo ci) {
@@ -92,11 +92,11 @@ public abstract class PlayerEntityMixin extends LivingEntity implements Colossal
         return instance;
     }
 
-    @ModifyReturnValue(
+    /*@ModifyReturnValue(
             method = "getMovementSpeed",
             at = @At("RETURN")
     )
     private float satisfying$getMovementSpeed(float original) {
         return SatisfyingSuperStar.INSTANCE.modifyMovementSpeed((PlayerEntity) (Object) this, original);
-    }
+    }*/
 }

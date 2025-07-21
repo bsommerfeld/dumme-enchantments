@@ -2,8 +2,8 @@ package gg.norisk.enchantments.mixin.client;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import gg.norisk.enchantments.impl.RollEnchantment;
-import gg.norisk.satisfying.SatisfyingSuperStar;
+//import gg.norisk.enchantments.impl.RollEnchantment;
+//import gg.norisk.satisfying.SatisfyingSuperStar;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
@@ -20,13 +20,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntityRenderer.class)
-public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
-    public PlayerEntityRendererMixin(EntityRendererFactory.Context context, PlayerEntityModel<AbstractClientPlayerEntity> entityModel, float f) {
-        super(context, entityModel, f);
-    }
+public abstract class PlayerEntityRendererMixin {
 
 
-    @Inject(method = "setupTransforms(Lnet/minecraft/client/network/AbstractClientPlayerEntity;Lnet/minecraft/client/util/math/MatrixStack;FFFF)V", at = @At(value = "HEAD"), cancellable = true)
+    /*@Inject(method = "setupTransforms(Lnet/minecraft/client/network/AbstractClientPlayerEntity;Lnet/minecraft/client/util/math/MatrixStack;FFFF)V", at = @At(value = "HEAD"), cancellable = true)
     private void stupid$setupTransformsInjection(AbstractClientPlayerEntity abstractClientPlayerEntity, MatrixStack matrixStack, float f, float g, float h, float i, CallbackInfo ci) {
         RollEnchantment.INSTANCE.handleMatrixStackRotation(abstractClientPlayerEntity, matrixStack, f, g, h, i);
     }
@@ -46,5 +43,5 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         } else {
             return original.call(identifier);
         }
-    }
+    }*/
 }

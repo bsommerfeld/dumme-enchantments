@@ -25,6 +25,8 @@
     "ShovelItemMixin",
     "client.LimbAnimatorAccessor",
     "client.satisfying.EntityRendererMixin",
+    "datatracker.EntityMixin",
+    "datatracker.EntityTrackerEntryMixin",
     "satisfying.ExperienceOrbEntityMixin",
     "satisfying.FishingBobberEntityAccessor",
     "satisfying.FishingBobberEntityMixin",

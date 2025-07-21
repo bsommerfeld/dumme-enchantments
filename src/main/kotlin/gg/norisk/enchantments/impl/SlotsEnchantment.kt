@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import gg.norisk.enchantments.EnchantmentRegistry.slots
 import gg.norisk.enchantments.EnchantmentUtils.blockPos
@@ -59,3 +59,4 @@ object SlotsEnchantment {
         }
     }
 }
+*/

@@ -1,4 +1,4 @@
-package gg.norisk.satisfying
+/*package gg.norisk.satisfying
 
 import gg.norisk.datatracker.entity.getSyncedData
 import gg.norisk.datatracker.entity.setSyncedData
@@ -94,3 +94,4 @@ object SatisfyingFishing {
             this.setSyncedData("$MOD_ID:satisfyingBobberId", value)
         }
 }
+*/

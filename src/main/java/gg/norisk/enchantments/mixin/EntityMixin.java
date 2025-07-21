@@ -3,15 +3,15 @@ package gg.norisk.enchantments.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import gg.norisk.enchantments.impl.GlitchEnchantment;
-import gg.norisk.enchantments.impl.MedusaEnchantment;
-import gg.norisk.enchantments.impl.RollEnchantment;
-import gg.norisk.enchantments.impl.SlipperyEnchantment;
-import gg.norisk.enchantments.impl.SquishEnchantment;
-import gg.norisk.enchantments.impl.TrashEnchantment;
+//import gg.norisk.enchantments.impl.MedusaEnchantment;
+//import gg.norisk.enchantments.impl.RollEnchantment;
+//import gg.norisk.enchantments.impl.SlipperyEnchantment;
+//import gg.norisk.enchantments.impl.SquishEnchantment;
+//import gg.norisk.enchantments.impl.TrashEnchantment;
 import gg.norisk.enchantments.utils.Animation;
-import gg.norisk.satisfying.SatisfyingCrush;
-import gg.norisk.satisfying.SatisfyingSuperStar;
-import gg.norisk.satisfying.SatisfyingTrail;
+//import gg.norisk.satisfying.SatisfyingCrush;
+//import gg.norisk.satisfying.SatisfyingSuperStar;
+//import gg.norisk.satisfying.SatisfyingTrail;
 import net.minecraft.entity.Entity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Vec3d;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements SquishEnchantment.SquishEntity, MedusaEnchantment.MedusaEntity {
+public abstract class EntityMixin {
     @Unique
     private final List<Animation> squishAnimations = new ArrayList<>();
     @Unique
@@ -48,7 +48,7 @@ public abstract class EntityMixin implements SquishEnchantment.SquishEntity, Med
     @Unique
     private Animation stupidBalloonAnimation;
 
-    @NotNull
+    /*@NotNull
     @Override
     public List<Animation> getSquishAnimations() {
         return squishAnimations;
@@ -163,5 +163,5 @@ public abstract class EntityMixin implements SquishEnchantment.SquishEntity, Med
     @Override
     public void setStupid_limbSpeed(@Nullable Float aFloat) {
         stupidLimbSpeed = aFloat;
-    }
+    }*/
 }

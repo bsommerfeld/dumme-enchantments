@@ -4,3 +4,4 @@ run
 build
 *.launch
 .kotlin
+bin

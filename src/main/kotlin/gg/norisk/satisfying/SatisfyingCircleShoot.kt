@@ -3,7 +3,7 @@ package gg.norisk.satisfying
 import gg.norisk.enchantments.EnchantmentRegistry.circleShoot
 import gg.norisk.enchantments.EnchantmentUtils.getLevel
 import gg.norisk.enchantments.impl.BouncyEnchantment.isBouncy
-import gg.norisk.satisfying.SatisfyingArrowTrail.hasSatisfyingArrowTrail
+//import gg.norisk.satisfying.SatisfyingArrowTrail.hasSatisfyingArrowTrail
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.projectile.ArrowEntity
@@ -66,7 +66,7 @@ object SatisfyingCircleShoot {
 
             // Übertrage spezielle Eigenschaften vom Originalprojektil
             newArrow.isBouncy = projectileEntity.isBouncy
-            newArrow.hasSatisfyingArrowTrail = projectileEntity.hasSatisfyingArrowTrail
+            //newArrow.hasSatisfyingArrowTrail = projectileEntity.hasSatisfyingArrowTrail
 
             // Spawne den Pfeil in der Welt
             world.spawnEntity(newArrow)
@@ -111,7 +111,7 @@ object SatisfyingCircleShoot {
 
             // Übertrage besondere Eigenschaften
             newArrow.isBouncy = projectileEntity.isBouncy
-            newArrow.hasSatisfyingArrowTrail = projectileEntity.hasSatisfyingArrowTrail
+            //newArrow.hasSatisfyingArrowTrail = projectileEntity.hasSatisfyingArrowTrail
 
             world.spawnEntity(newArrow)
         }
@@ -158,7 +158,7 @@ object SatisfyingCircleShoot {
 
             // Übertrage besondere Eigenschaften
             newArrow.isBouncy = projectileEntity.isBouncy
-            newArrow.hasSatisfyingArrowTrail = projectileEntity.hasSatisfyingArrowTrail
+            //newArrow.hasSatisfyingArrowTrail = projectileEntity.hasSatisfyingArrowTrail
 
             world.spawnEntity(newArrow)
         }

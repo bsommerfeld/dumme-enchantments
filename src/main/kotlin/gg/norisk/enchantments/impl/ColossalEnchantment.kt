@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation
 import gg.norisk.enchantments.EnchantmentRegistry.colossal
@@ -179,4 +179,4 @@ object ColossalEnchantment {
         val scale = colossal.getLevel(player.mainHandStack) ?: return original
         return original * (scale * 3)
     }
-}
+}*/

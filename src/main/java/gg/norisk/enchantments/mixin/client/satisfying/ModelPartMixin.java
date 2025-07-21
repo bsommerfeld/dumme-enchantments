@@ -1,6 +1,6 @@
 package gg.norisk.enchantments.mixin.client.satisfying;
 
-import gg.norisk.satisfying.SatisfyingExperience;
+//import gg.norisk.satisfying.SatisfyingExperience;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ModelPart.class)
-public abstract class ModelPartMixin implements SatisfyingExperience.ModelPartExt {
+public abstract class ModelPartMixin {
     @Unique
     private String name;
 
@@ -21,7 +21,7 @@ public abstract class ModelPartMixin implements SatisfyingExperience.ModelPartEx
         //SatisfyingExperience.INSTANCE.renderBlock((ModelPart) (Object) this, matrixStack, MinecraftClient.getInstance().player, MinecraftClient.getInstance().getRenderTickCounter().getTickDelta(false));
     }
 
-    @NotNull
+    /*@NotNull
     @Override
     public String getSatisfying$name() {
         return name;
@@ -30,5 +30,5 @@ public abstract class ModelPartMixin implements SatisfyingExperience.ModelPartEx
     @Override
     public void setSatisfying$name(@NotNull String s) {
         this.name = s;
-    }
+    }*/
 }

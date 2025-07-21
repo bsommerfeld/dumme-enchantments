@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.utils
+/*package gg.norisk.enchantments.utils
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -25,3 +25,4 @@ object BlockStateSerializer : KSerializer<BlockState> {
         return blockState
     }
 }
+*/

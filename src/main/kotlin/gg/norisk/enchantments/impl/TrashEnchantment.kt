@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import gg.norisk.datatracker.entity.EntityWrapper
 import gg.norisk.datatracker.entity.getSyncedData
@@ -145,3 +145,4 @@ object TrashEnchantment {
             this.setSyncedData("$MOD_ID:IsTrash", value)
         }
 }
+*/

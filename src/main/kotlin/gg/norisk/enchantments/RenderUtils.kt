@@ -35,7 +35,7 @@ object RenderUtils {
 
         // Rückverschiebung nach der Skalierung, um wieder zum tatsächlichen Mittelpunkt des Blocks zu gelangen
         matrixStack.translate(-0.5, -0.5, -0.5)
-        renderer.renderBlock(
+        /*renderer.renderBlock(
             state,
             blockPos,
             world,
@@ -43,7 +43,7 @@ object RenderUtils {
             vertexConsumer,
             true,
             net.minecraft.util.math.random.Random.create()
-        )
+        )*/
         matrixStack.pop()
     }
 }

@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.utils
+/*package gg.norisk.enchantments.utils
 
 import gg.norisk.enchantments.EnchantmentRegistry.slippery
 import gg.norisk.enchantments.EnchantmentUtils.getLevel
@@ -118,3 +118,4 @@ class SlipperyBlockFeatureRenderer<T : LivingEntity, M : EntityModel<T>>(
         matrices.pop()
     }
 }
+*/

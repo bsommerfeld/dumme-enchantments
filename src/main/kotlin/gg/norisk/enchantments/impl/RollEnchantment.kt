@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation
 import gg.norisk.datatracker.entity.getSyncedData
@@ -144,4 +144,4 @@ object RollEnchantment {
         set(value) {
             this.setSyncedData("$MOD_ID:IsRolling", value)
         }
-}
+}*/

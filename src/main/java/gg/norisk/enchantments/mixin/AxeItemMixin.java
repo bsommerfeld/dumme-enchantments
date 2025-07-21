@@ -2,7 +2,7 @@ package gg.norisk.enchantments.mixin;
 
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
-import gg.norisk.enchantments.impl.ColossalEnchantment;
+//import gg.norisk.enchantments.impl.ColossalEnchantment;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -31,7 +31,7 @@ public abstract class AxeItemMixin {
     @Shadow
     protected abstract Optional<BlockState> tryStrip(World world, BlockPos blockPos, @Nullable PlayerEntity playerEntity, BlockState blockState);
 
-    @Inject(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/AxeItem;tryStrip(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/block/BlockState;)Ljava/util/Optional;", shift = At.Shift.AFTER))
+    /*@Inject(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/AxeItem;tryStrip(Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/block/BlockState;)Ljava/util/Optional;", shift = At.Shift.AFTER))
     private void stupid$MultiStrip(ItemUsageContext itemUsageContext, CallbackInfoReturnable<ActionResult> cir) {
         World world = itemUsageContext.getWorld();
         BlockPos blockPos = itemUsageContext.getBlockPos();
@@ -55,5 +55,5 @@ public abstract class AxeItemMixin {
                 });
             }
         }
-    }
+    }*/
 }

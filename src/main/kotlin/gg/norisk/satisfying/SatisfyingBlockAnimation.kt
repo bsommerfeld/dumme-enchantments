@@ -1,4 +1,4 @@
-package gg.norisk.satisfying
+/*package gg.norisk.satisfying
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType
@@ -346,3 +346,4 @@ object SatisfyingBlockAnimation {
         return original.call(instance, blockPos, blockState, i)
     }
 }
+*/

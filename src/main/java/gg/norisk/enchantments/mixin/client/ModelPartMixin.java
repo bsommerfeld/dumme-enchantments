@@ -1,6 +1,6 @@
 package gg.norisk.enchantments.mixin.client;
 
-import gg.norisk.enchantments.impl.BalloonEnchantment;
+//import gg.norisk.enchantments.impl.BalloonEnchantment;
 import gg.norisk.enchantments.utils.Animation;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ModelPart.class)
-public abstract class ModelPartMixin implements BalloonEnchantment.BallonModelPart {
-    @Unique
+public abstract class ModelPartMixin {
+    /*@Unique
     private Animation stupidBalloonAnimation;
 
     @Nullable
@@ -32,5 +32,5 @@ public abstract class ModelPartMixin implements BalloonEnchantment.BallonModelPa
         if (stupidBalloonAnimation != null) {
             matrixStack.scale(stupidBalloonAnimation.get(), stupidBalloonAnimation.get(), stupidBalloonAnimation.get());
         }
-    }
+    }*/
 }

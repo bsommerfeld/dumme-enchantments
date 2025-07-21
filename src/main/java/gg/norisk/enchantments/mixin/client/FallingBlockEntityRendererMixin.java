@@ -13,13 +13,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FallingBlockEntityRenderer.class)
-public abstract class FallingBlockEntityRendererMixin extends EntityRenderer<FallingBlockEntity> {
-    protected FallingBlockEntityRendererMixin(EntityRendererFactory.Context context) {
-        super(context);
-    }
-
-    @Inject(method = "render(Lnet/minecraft/entity/FallingBlockEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(DDD)V"))
+public abstract class FallingBlockEntityRendererMixin {
+    /*@Inject(method = "render(Lnet/minecraft/entity/FallingBlockEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(DDD)V"))
     private void renderInjection(FallingBlockEntity fallingBlockEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         HelicopterEnchantment.INSTANCE.applyRotation(fallingBlockEntity, matrixStack, f, g);
-    }
+    }*/
 }

@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(KeyboardInput.class)
 public abstract class KeyboardInputMixin extends Input {
-    @Shadow
+    /*@Shadow
     @Final
     private GameOptions settings;
 
@@ -70,5 +70,5 @@ public abstract class KeyboardInputMixin extends Input {
             pressingForward = true;
             movementForward = 1f;
         }
-    }
+    }*/
 }

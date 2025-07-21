@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ProjectileEntityRenderer.class)
-public abstract class ProjectileEntityRendererMixin<T extends PersistentProjectileEntity> extends EntityRenderer<T> {
-    protected ProjectileEntityRendererMixin(EntityRendererFactory.Context context) {
+public abstract class ProjectileEntityRendererMixin {
+    /*protected ProjectileEntityRendererMixin(EntityRendererFactory.Context context) {
         super(context);
     }
 
@@ -24,5 +24,5 @@ public abstract class ProjectileEntityRendererMixin<T extends PersistentProjecti
             super.render(persistentProjectileEntity, f, g, matrixStack, vertexConsumerProvider, i);
             ci.cancel();
         }
-    }
+    } */
 }

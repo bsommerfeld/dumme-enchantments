@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import gg.norisk.enchantments.EnchantmentRegistry.squish
 import gg.norisk.enchantments.EnchantmentUtils.blockPos
@@ -112,3 +112,4 @@ object SquishEnchantment {
         matrixStack.scale(scale.x.toFloat(), scale.y.toFloat(), scale.z.toFloat())
     }
 }
+*/

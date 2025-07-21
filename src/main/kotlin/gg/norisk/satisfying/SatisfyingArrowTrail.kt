@@ -1,4 +1,4 @@
-package gg.norisk.satisfying
+/*package gg.norisk.satisfying
 
 import gg.norisk.datatracker.entity.getSyncedData
 import gg.norisk.datatracker.entity.setSyncedData
@@ -53,4 +53,4 @@ object SatisfyingArrowTrail {
         set(value) {
             this.setSyncedData("$MOD_ID:hasSatisfyingArrowTrail", value)
         }
-}
+}*/

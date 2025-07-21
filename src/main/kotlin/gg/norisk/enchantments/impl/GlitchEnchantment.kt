@@ -31,14 +31,14 @@ object GlitchEnchantment {
             if (event.entity == MinecraftClient.getInstance().player) {
                 glitchJob?.cancel()
                 mcCoroutineTask(client = true, sync = true) {
-                    MinecraftClient.getInstance().gameRenderer.disablePostProcessor()
+                    //MinecraftClient.getInstance().gameRenderer.disablePostProcessor()
                 }
                 if (event.newValue) {
-                    glitchJob = infiniteMcCoroutineTask(period = 4.ticks, client = true, sync = true) {
+                    /*glitchJob = infiniteMcCoroutineTask(period = 4.ticks, client = true, sync = true) {
                         (MinecraftClient.getInstance().gameRenderer as GameRendererAccessor).invokeLoadPostProcessor(
                             glitches.random()
                         )
-                    }
+                    }*/
                 }
             }
             if (event.newValue) {

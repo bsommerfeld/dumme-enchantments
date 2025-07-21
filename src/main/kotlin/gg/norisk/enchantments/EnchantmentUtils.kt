@@ -2,7 +2,7 @@ package gg.norisk.enchantments
 
 import gg.norisk.enchantments.EnchantmentRegistry.fastFalling
 import gg.norisk.enchantments.impl.*
-import gg.norisk.satisfying.SatisfyingCrush
+//import gg.norisk.satisfying.SatisfyingCrush
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.Entity
@@ -43,12 +43,12 @@ object EnchantmentUtils {
     }
 
     fun applyTargetDamage(world: ServerWorld, entity: Entity, damageSource: DamageSource, itemStack: ItemStack?) {
-        SquishEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
-        SlotsEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
-        MemeEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
+        //SquishEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
+        //SlotsEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
+        //MemeEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
         VerificationEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
-        BalloonEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
-        SatisfyingCrush.applyTargetDamage(world, entity, damageSource, itemStack)
+        //BalloonEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
+        //SatisfyingCrush.applyTargetDamage(world, entity, damageSource, itemStack)
     }
 
     fun Entity.sound(soundEvent: SoundEvent, volume: Number = 1f, pitch: Number = 1f) {

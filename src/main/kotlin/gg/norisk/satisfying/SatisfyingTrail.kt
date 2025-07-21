@@ -1,4 +1,4 @@
-package gg.norisk.satisfying
+/*package gg.norisk.satisfying
 
 import com.mojang.authlib.GameProfile
 import gg.norisk.enchantments.StupidEnchantments.toId
@@ -161,3 +161,4 @@ object SatisfyingTrail {
         args.set(4, Color(255, 255, 255, player.getFadeValue()).rgb)
     }
 }
+*/

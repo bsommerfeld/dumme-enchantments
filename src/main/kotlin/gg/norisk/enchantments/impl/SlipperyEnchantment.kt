@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation
 import gg.norisk.enchantments.EnchantmentRegistry.slippery
@@ -55,4 +55,4 @@ object SlipperyEnchantment {
         }
         return false
     }
-}
+}*/

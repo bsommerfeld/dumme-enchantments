@@ -402,8 +402,7 @@ object EnchantmentsCommand {
             text("Tipp: click mal hier drauf") {
                 italic = true
                 color = Color.LIGHT_GRAY.rgb
-                clickEvent = ClickEvent(
-                    ClickEvent.Action.RUN_COMMAND,
+                clickEvent = ClickEvent.RunCommand(
                     "/item replace entity @e armor.feet with minecraft:diamond_boots[enchantments={levels:{'enchantments:slippery':1}}]"
                 )
             }
@@ -412,7 +411,8 @@ object EnchantmentsCommand {
 
 
     fun RegistryKey<Enchantment>.getEntry(world: World): RegistryEntry<Enchantment> {
-        return world.registryManager.get(RegistryKeys.ENCHANTMENT).getEntry(this.value).get()
+        TODO("1.21.5 Port")
+        //return world.registryManager.get(RegistryKeys.ENCHANTMENT).getEntry(this.value).get()
     }
 
     private fun <S : ServerCommandSource> CommandContext<S>.default() {

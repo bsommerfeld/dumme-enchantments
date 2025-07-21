@@ -1,4 +1,4 @@
-package gg.norisk.satisfying
+/*package gg.norisk.satisfying
 
 import gg.norisk.datatracker.entity.getSyncedData
 import gg.norisk.datatracker.entity.setSyncedData
@@ -244,4 +244,4 @@ object SatisfyingSuperStar {
     fun modifyMovementSpeed(player: PlayerEntity, original: Float): Float {
         return if (player.isSatisfyingSuperMario) original * 1.5f else original
     }
-}
+}*/

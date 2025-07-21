@@ -2,7 +2,7 @@ package gg.norisk.enchantments.mixin.satisfying;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import gg.norisk.satisfying.SatisfyingExperience;
+//import gg.norisk.satisfying.SatisfyingExperience;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
@@ -27,8 +27,8 @@ public abstract class ExperienceOrbEntityMixin extends Entity {
     @Shadow
     protected abstract int repairPlayerGears(ServerPlayerEntity serverPlayerEntity, int i);
 
-    @Shadow
-    private int amount;
+    /*@Shadow
+    private int amount;*/
 
     @Shadow
     private int pickingCount;
@@ -38,7 +38,7 @@ public abstract class ExperienceOrbEntityMixin extends Entity {
 
     @Shadow private int orbAge;
 
-    @ModifyReturnValue(
+    /*@ModifyReturnValue(
             method = "getGravity",
             at = @At("RETURN")
     )
@@ -54,9 +54,9 @@ public abstract class ExperienceOrbEntityMixin extends Entity {
         if (SatisfyingExperience.INSTANCE.isCustom((ExperienceOrbEntity) (Object) this)) {
             this.orbAge += 60;
         }
-    }
+    }*/
 
-    @Unique
+    /*Unique
     private void pickUp(PlayerEntity playerEntity) {
         if (playerEntity instanceof ServerPlayerEntity serverPlayerEntity) {
             playerEntity.sendPickup(this, 1);
@@ -94,5 +94,5 @@ public abstract class ExperienceOrbEntityMixin extends Entity {
     )
     private boolean satisfying$cancelMerge(ExperienceOrbEntity instance, ExperienceOrbEntity experienceOrbEntity) {
         return !SatisfyingExperience.INSTANCE.isCustom((ExperienceOrbEntity) (Object) this);
-    }
+    }*/
 }

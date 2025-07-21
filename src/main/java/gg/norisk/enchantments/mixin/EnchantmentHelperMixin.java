@@ -5,6 +5,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -23,7 +24,7 @@ public abstract class EnchantmentHelperMixin {
     }
 
     @Inject(method = "onProjectileSpawned", at = @At("TAIL"))
-    private static void stupid$onProjectileSpawned(ServerWorld serverWorld, ItemStack itemStack, PersistentProjectileEntity persistentProjectileEntity, Consumer<Item> consumer, CallbackInfo ci) {
-        EnchantmentUtils.INSTANCE.applyProjectileSpawned(serverWorld,itemStack, persistentProjectileEntity);
+    private static void stupid$onProjectileSpawned(ServerWorld serverWorld, ItemStack itemStack, ProjectileEntity projectileEntity, Consumer<Item> consumer, CallbackInfo ci) {
+        //EnchantmentUtils.INSTANCE.applyProjectileSpawned(serverWorld,itemStack, projectileEntity);
     }
 }

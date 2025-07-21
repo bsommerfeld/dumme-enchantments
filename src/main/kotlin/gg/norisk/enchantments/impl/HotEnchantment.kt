@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import gg.norisk.emote.network.EmoteNetworking.playEmote
 import gg.norisk.enchantments.EnchantmentRegistry.hot
@@ -35,4 +35,4 @@ object HotEnchantment {
             player.dropItem(currentStack, false, true)
         })
     }
-}
+}*/

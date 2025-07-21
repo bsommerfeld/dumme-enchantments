@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.impl
+/*package gg.norisk.enchantments.impl
 
 import gg.norisk.enchantments.EnchantmentRegistry.dopamin
 import gg.norisk.enchantments.EnchantmentUtils.getLevel
@@ -164,4 +164,4 @@ object DopaminEnchantment {
             CompletableFuture.allOf(*futures.toTypedArray())
         }, backgroundExecutor)
     }
-}
+}*/

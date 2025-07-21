@@ -3,7 +3,7 @@ package gg.norisk.enchantments.mixin.client;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
-import gg.norisk.enchantments.impl.RollEnchantment;
+//import gg.norisk.enchantments.impl.RollEnchantment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -21,13 +21,13 @@ public abstract class MouseMixin {
     @Final
     private MinecraftClient client;
 
-    @WrapWithCondition(
+    /*@WrapWithCondition(
             method = "updateMouse",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V")
     )
     private boolean stupid$changeLookDirection(ClientPlayerEntity instance, double x, double y) {
         return !RollEnchantment.INSTANCE.isStupidRolling(instance);
-    }
+    }*/
 
     @ModifyArgs(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"))
     private void stupid$invertedMouse(Args args) {

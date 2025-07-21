@@ -6,8 +6,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
 import gg.norisk.enchantments.impl.InvertedEnchantment;
-import gg.norisk.enchantments.impl.MedusaEnchantment;
-import gg.norisk.enchantments.impl.SlipperyEnchantment;
+//import gg.norisk.enchantments.impl.MedusaEnchantment;
+//import gg.norisk.enchantments.impl.SlipperyEnchantment;
 import it.unimi.dsi.fastutil.doubles.DoubleDoubleImmutablePair;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -29,8 +29,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity {
-    @Shadow
+public abstract class LivingEntityMixin {
+    /*@Shadow
     protected abstract float getKnockbackAgainst(Entity entity, DamageSource damageSource);
 
     @Shadow
@@ -101,5 +101,5 @@ public abstract class LivingEntityMixin extends Entity {
         } else {
             original.call(instance, oldD, oldE, oldF);
         }
-    }
+    }*/
 }

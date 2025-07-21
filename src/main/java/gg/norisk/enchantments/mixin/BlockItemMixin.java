@@ -2,7 +2,7 @@ package gg.norisk.enchantments.mixin;
 
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
-import gg.norisk.enchantments.impl.ColossalEnchantment;
+//import gg.norisk.enchantments.impl.ColossalEnchantment;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockItem.class)
 public abstract class BlockItemMixin {
-    @Shadow
+    /*@Shadow
     public abstract @Nullable ItemPlacementContext getPlacementContext(ItemPlacementContext itemPlacementContext);
 
     @Shadow
@@ -92,5 +92,5 @@ public abstract class BlockItemMixin {
                 });
             }
         }
-    }
+    } */
 }

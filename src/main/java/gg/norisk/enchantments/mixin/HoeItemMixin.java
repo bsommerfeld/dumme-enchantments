@@ -3,7 +3,7 @@ package gg.norisk.enchantments.mixin;
 import com.mojang.datafixers.util.Pair;
 import gg.norisk.enchantments.EnchantmentRegistry;
 import gg.norisk.enchantments.EnchantmentUtils;
-import gg.norisk.enchantments.impl.ColossalEnchantment;
+//import gg.norisk.enchantments.impl.ColossalEnchantment;
 import net.minecraft.block.Block;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +33,7 @@ public abstract class HoeItemMixin {
     @Final
     protected static Map<Block, Pair<Predicate<ItemUsageContext>, Consumer<ItemUsageContext>>> TILLING_ACTIONS;
 
-    @Inject(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemUsageContext;getPlayer()Lnet/minecraft/entity/player/PlayerEntity;", ordinal = 0))
+    /*@Inject(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemUsageContext;getPlayer()Lnet/minecraft/entity/player/PlayerEntity;", ordinal = 0))
     private void stupid$colossalHoe(ItemUsageContext itemUsageContext, CallbackInfoReturnable<ActionResult> cir) {
         World world = itemUsageContext.getWorld();
         PlayerEntity playerEntity = itemUsageContext.getPlayer();
@@ -63,5 +63,5 @@ public abstract class HoeItemMixin {
                 });
             }
         }
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-package gg.norisk.enchantments.utils
+/*package gg.norisk.enchantments.utils
 
 import gg.norisk.enchantments.impl.TrashEnchantment.isTrash
 import gg.norisk.enchantments.impl.TrashEnchantment.trashItems
@@ -127,3 +127,4 @@ class TrashItemsFeatureRenderer<T : LivingEntity, M : EntityModel<T>>(
         matrices.pop()
     }
 }
+*/

@@ -2,7 +2,7 @@ package gg.norisk.enchantments.mixin.satisfying;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
-import gg.norisk.satisfying.SatisfyingFishing;
+//import gg.norisk.satisfying.SatisfyingFishing;
 import gg.norisk.satisfying.SatisfyingInstantFishing;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -35,7 +35,7 @@ public abstract class FishingBobberEntityMixin extends Entity {
         SatisfyingInstantFishing.INSTANCE.mark(playerEntity, world, i, j, (FishingBobberEntity) (Object) this);
     }
 
-    @ModifyConstant(method = "tickFishingLogic", constant = @Constant(intValue = 1, ordinal = 0))
+    /*@ModifyConstant(method = "tickFishingLogic", constant = @Constant(intValue = 1, ordinal = 0))
     private int satisfying$cooldown(int value) {
         if (SatisfyingFishing.INSTANCE.getFishingHookOwnerId(this) != -1 || SatisfyingInstantFishing.INSTANCE.isInstantFishing(this)) {
             return 200;
@@ -64,5 +64,5 @@ public abstract class FishingBobberEntityMixin extends Entity {
         if (SatisfyingFishing.INSTANCE.getFishingHookOwnerId(this) != -1 || SatisfyingInstantFishing.INSTANCE.isInstantFishing(this)) {
             color.set(1);
         }
-    }
+    }*/
 }

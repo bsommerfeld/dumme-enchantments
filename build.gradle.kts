@@ -6,7 +6,7 @@ val minecraftVersion = "1.21"
 
 plugins {
     kotlin("jvm") version "2.0.0"
-    id("fabric-loom") version "1.7-SNAPSHOT"
+    id("fabric-loom") version "1.11-SNAPSHOT"
     kotlin("plugin.serialization") version "2.0.0"
     `maven-publish`
 }
@@ -58,37 +58,38 @@ loom {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:1.21")
-    mappings("net.fabricmc:yarn:1.21+build.9")
-    modImplementation("net.fabricmc:fabric-loader:0.16.0")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.100.7+1.21")
+    minecraft("com.mojang:minecraft:1.21.5")
+    mappings("net.fabricmc:yarn:1.21.5+build.1")
+    modImplementation("net.fabricmc:fabric-loader:0.16.4")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:0.128.1+1.21.5")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.10.19+kotlin.1.9.23")
 
-    modImplementation("gg.norisk:datatracker:${minecraftVersion}-1.0.7")
-    modImplementation("gg.norisk:emote-lib:${minecraftVersion}-1.0.29")
-    modImplementation("gg.norisk:owoplus:${minecraftVersion}-1.0.6")
-    modImplementation("io.github.ladysnake:satin:2.0.0")
+    //modImplementation("gg.norisk:datatracker:${minecraftVersion}-1.0.7")
+    modImplementation("gg.norisk:nrc-emotes:${property("deps.api.nrc-emotes")}")
+    modImplementation("gg.norisk:nrc-core:${property("deps.api.nrc-core")}")
+    modImplementation("gg.norisk:backend-base-api:1.3.31")
+    //modImplementation("gg.norisk:owoplus:${minecraftVersion}-1.0.6")
+    //modImplementation("io.github.ladysnake:satin:2.0.0")
 
     val geckolibVersion = "1.21:4.5.6"
 
-    modImplementation("io.wispforest:owo-lib:0.12.10+${minecraftVersion}")
-    modImplementation("software.bernie.geckolib:geckolib-fabric-$geckolibVersion")
+    modImplementation("io.wispforest:owo-lib:${property("deps.api.owo")}")
+    modImplementation("software.bernie.geckolib:geckolib-fabric-1.21.5:${property("deps.api.geckolib")}")
 
-    modImplementation("maven.modrinth:sodium:mc1.21-0.5.11")
-    modImplementation("maven.modrinth:nvidium:0.2.9-beta")
-    modImplementation("maven.modrinth:auth-me:8.0.0+1.21")
-    modImplementation("maven.modrinth:cloth-config:15.0.130+fabric")
+    modImplementation("maven.modrinth:sodium:${property("deps.api.sodium")}")
+    //modImplementation("maven.modrinth:nvidium:0.2.9-beta")
 
-    modImplementation("gg.norisk:noriskclient-fabric-utils:${minecraftVersion}-2.1.27")
-    modImplementation("gg.norisk:noriskclient-zoom:${minecraftVersion}-2.0.2")
-    modImplementation("gg.norisk:ui:${minecraftVersion}-2.2.15")
-    modImplementation("gg.norisk:fullbright:${minecraftVersion}-2.0.0")
-    modImplementation("gg.norisk:nametags:${minecraftVersion}-2.0.0")
-    modImplementation("gg.norisk:freelook:${minecraftVersion}-2.0.2")
+    //modImplementation("gg.norisk:noriskclient-fabric-utils:${minecraftVersion}-2.1.27")
+    //modImplementation("gg.norisk:noriskclient-zoom:${minecraftVersion}-2.0.2")
+    //modImplementation("gg.norisk:ui:${minecraftVersion}-2.2.15")
+    //modImplementation("gg.norisk:fullbright:${minecraftVersion}-2.0.0")
+    //modImplementation("gg.norisk:nametags:${minecraftVersion}-2.0.0")
+    //modImplementation("gg.norisk:freelook:${minecraftVersion}-2.0.2")
 
     modImplementation("net.silkmc:silk-core:$silkVersion")
     modImplementation("net.silkmc:silk-network:$silkVersion")
     modImplementation("net.silkmc:silk-commands:$silkVersion")
+    modImplementation("net.silkmc:silk-nbt:$silkVersion")
 }
 
 tasks {

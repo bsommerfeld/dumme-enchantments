@@ -20,12 +20,20 @@
       {
         "adapter": "kotlin",
         "value": "gg.norisk.enchantments.StupidEnchantments"
+      },
+      {
+        "value": "gg.norisk.datatracker.DataTracker",
+        "adapter": "kotlin"
       }
     ],
     "client": [
       {
         "adapter": "kotlin",
         "value": "gg.norisk.enchantments.StupidEnchantments"
+      },
+      {
+        "value": "gg.norisk.datatracker.DataTracker",
+        "adapter": "kotlin"
       }
     ]
   },
@@ -34,11 +42,5 @@
   ],
   "accessWidener": "enchantments.accesswidener",
   "depends": {
-    "fabricloader": ">=0.15",
-    "minecraft": "1.21",
-    "java": ">=21",
-    "fabric-language-kotlin": "*",
-    "fabric": "*",
-    "silk-core": "*"
   }
 }
