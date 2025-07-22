@@ -80,7 +80,8 @@ object HelicopterEnchantment {
         g: Float
     ) {
         if (!fallingBlockEntity.isHelicopter) return
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(fallingBlockEntity.helicopterBlock.animation.get()))
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(fallingBlockEntity.helicopterBlock.animation.
+        get()))
         if (fallingBlockEntity.helicopterBlock.animation.isDone) {
             fallingBlockEntity.helicopterBlock.animation.reset()
         }

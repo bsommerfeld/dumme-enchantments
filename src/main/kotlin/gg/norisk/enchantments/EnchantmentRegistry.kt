@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier
 object EnchantmentRegistry {
     val fastFalling: RegistryKey<Enchantment> = of("fast_falling")
     val squish: RegistryKey<Enchantment> = of("squish")
+    val freeze: RegistryKey<Enchantment> = of("freeze")
     val dopamin: RegistryKey<Enchantment> = of("dopamin")
     val glitch: RegistryKey<Enchantment> = of("glitch")
     val slots: RegistryKey<Enchantment> = of("slots")

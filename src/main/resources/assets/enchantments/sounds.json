@@ -63,5 +63,11 @@
     "sounds": [
       "enchantments:electricity"
     ]
+  },
+  "freeze": {
+    "sounds": [
+      "enchantments:freeze_1",
+      "enchantments:freeze_2"
+    ]
   }
 }

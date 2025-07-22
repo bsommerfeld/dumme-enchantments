@@ -2,6 +2,7 @@ package gg.norisk.enchantments
 
 import gg.norisk.enchantments.EnchantmentRegistry.fastFalling
 import gg.norisk.enchantments.impl.*
+import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
 //import gg.norisk.satisfying.SatisfyingCrush
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
@@ -47,6 +48,7 @@ object EnchantmentUtils {
         //SlotsEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
         //MemeEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
         VerificationEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
+        FreezeEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
         //BalloonEnchantment.applyTargetDamage(world, entity, damageSource, itemStack)
         //SatisfyingCrush.applyTargetDamage(world, entity, damageSource, itemStack)
     }

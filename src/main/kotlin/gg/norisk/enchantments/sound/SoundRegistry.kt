@@ -25,6 +25,7 @@ object SoundRegistry {
     val HYDRAULIC_PRESS_START = register("hydraulic_press_start")
     val STAR_SOUND = register("star_sound")
     val ELECTRICITY = register("electricity")
+    val FREEZE = register("freeze")
 
     fun init() {
     }
