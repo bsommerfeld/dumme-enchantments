@@ -64,6 +64,21 @@
       "enchantments:electricity"
     ]
   },
+  "bonk": {
+    "sounds": [
+      "enchantments:bonk"
+    ]
+  },
+  "slingshot_stretch": {
+    "sounds": [
+      "enchantments:slingshot_stretch"
+    ]
+  },
+  "slingshot_release": {
+    "sounds": [
+      "enchantments:slingshot_release"
+    ]
+  },
   "freeze": {
     "sounds": [
       "enchantments:freeze_1",

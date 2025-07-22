@@ -51,6 +51,18 @@ data class Animation(
     val isDone: Boolean
         get() = System.nanoTime() - startTime >= dur.toJavaDuration().toNanos()
 
+    /**
+     * Returns the raw progress of the animation from 0.0 to 1.0 without easing applied.
+     */
+    fun getProgress(): Float {
+        val currentTime = System.nanoTime()
+        val delta = currentTime - startTime
+        val nanoDuration = dur.toJavaDuration().toNanos()
+        var progress = delta.toFloat() / nanoDuration
+        progress = max(0.0, min(1.0, progress.toDouble())).toFloat()
+        return if (!forward) 1.0f - progress else progress
+    }
+
     enum class Easing(val floatFunction: Double2DoubleFunction) {
         LINEAR(Double2DoubleFunction { x: Double -> x }),
         SINE_IN(Double2DoubleFunction { x: Double -> 1 - cos(x * Math.PI / 2) }),

@@ -25,6 +25,6 @@ public abstract class EnchantmentHelperMixin {
 
     @Inject(method = "onProjectileSpawned", at = @At("TAIL"))
     private static void stupid$onProjectileSpawned(ServerWorld serverWorld, ItemStack itemStack, ProjectileEntity projectileEntity, Consumer<Item> consumer, CallbackInfo ci) {
-        //EnchantmentUtils.INSTANCE.applyProjectileSpawned(serverWorld,itemStack, projectileEntity);
+        EnchantmentUtils.INSTANCE.applyProjectileSpawned(serverWorld,itemStack, projectileEntity);
     }
 }

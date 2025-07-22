@@ -35,7 +35,9 @@
     "satisfying.FishingBobberEntityMixin",
     "satisfying.FishingRodItemMixin",
     "satisfying.StructureTemplateMixin",
-    "satisfying.TreeFeatureMixin"
+    "satisfying.TreeFeatureMixin",
+    "schleuder.BowItemMixin",
+    "schleuder.PersistentProjectileEntityMixin"
   ],
   "client": [
     "client.AnimalModelMixin",
@@ -66,6 +68,8 @@
     "freeze.EntityRendererMixin",
     "freeze.LivingEntityRendererMixin",
     "helicopterv2.CameraMixin",
-    "helicopterv2.PlayerEntityModelMixin"
+    "helicopterv2.PlayerEntityModelMixin",
+    "schleuder.HeldItemRendererMixin",
+    "schleuder.LivingEntityRendererMixin"
   ]
 }

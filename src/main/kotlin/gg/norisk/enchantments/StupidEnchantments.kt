@@ -4,6 +4,7 @@ import gg.norisk.enchantments.command.EnchantmentsCommand
 import gg.norisk.enchantments.command.SatisfyingCommand
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
+import gg.norisk.enchantments.impl.schleuder.SchleuderEnchantment
 import gg.norisk.enchantments.sound.SoundRegistry
 import gg.norisk.satisfying.*
 import net.fabricmc.api.ClientModInitializer
@@ -27,6 +28,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         HelicopterEnchantment.initServer()
         HelicopterEnchantmentV2.initServer()
         FreezeEnchantment.initServer()
+        SchleuderEnchantment.initServer()
         //TrashEnchantment.initServer()
         EnchantmentsCommand.initServer()
         SatisfyingCommand.initServer()

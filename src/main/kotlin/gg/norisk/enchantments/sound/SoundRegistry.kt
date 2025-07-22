@@ -26,6 +26,9 @@ object SoundRegistry {
     val STAR_SOUND = register("star_sound")
     val ELECTRICITY = register("electricity")
     val FREEZE = register("freeze")
+    val SLINGSHOT_RELEASE = register("slingshot_release")
+    val SLINGTSHOT_STRETCH = register("slingshot_stretch")
+    val BONK = register("bonk")
 
     fun init() {
     }

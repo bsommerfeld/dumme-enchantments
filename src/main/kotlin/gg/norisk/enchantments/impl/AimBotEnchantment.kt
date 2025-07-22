@@ -20,6 +20,7 @@ import net.minecraft.entity.EntityAttachmentType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.ArrowEntity
 import net.minecraft.entity.projectile.PersistentProjectileEntity
+import net.minecraft.entity.projectile.ProjectileEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.server.world.ServerWorld
@@ -111,13 +112,13 @@ object AimBotEnchantment {
     fun applyProjectileSpawned(
         serverWorld: ServerWorld,
         itemStack: ItemStack,
-        projectile: PersistentProjectileEntity
+        projectile: ProjectileEntity
     ) {
         mcCoroutineTask(sync = true, client = false, delay = 1.ticks) {
             val level = aimbot.getLevel(itemStack) ?: return@mcCoroutineTask
-            projectile.isStupidAimbot = true
+            //projectile.isStupidAimbot = true
             val shooter = projectile.owner as? PlayerEntity? ?: return@mcCoroutineTask
-            projectile.stupidAimbotTargetId = shooter.stupidAutoAimTargetId
+            //projectile.stupidAimbotTargetId = shooter.stupidAutoAimTargetId
         }
     }
 

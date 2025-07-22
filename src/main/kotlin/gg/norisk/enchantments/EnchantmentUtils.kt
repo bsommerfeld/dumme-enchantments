@@ -3,6 +3,7 @@ package gg.norisk.enchantments
 import gg.norisk.enchantments.EnchantmentRegistry.fastFalling
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
+import gg.norisk.enchantments.impl.schleuder.SchleuderEnchantment
 //import gg.norisk.satisfying.SatisfyingCrush
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.enchantment.EnchantmentHelper
@@ -11,6 +12,7 @@ import net.minecraft.entity.EquipmentSlot
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.entity.projectile.PersistentProjectileEntity
+import net.minecraft.entity.projectile.ProjectileEntity
 import net.minecraft.entity.projectile.ProjectileUtil
 import net.minecraft.item.ItemStack
 import net.minecraft.registry.RegistryKey
@@ -117,8 +119,9 @@ object EnchantmentUtils {
     fun applyProjectileSpawned(
         serverWorld: ServerWorld,
         itemStack: ItemStack,
-        persistentProjectileEntity: PersistentProjectileEntity
+        persistentProjectileEntity: ProjectileEntity
     ) {
         AimBotEnchantment.applyProjectileSpawned(serverWorld, itemStack, persistentProjectileEntity)
+        SchleuderEnchantment.applyProjectileSpawned(serverWorld, itemStack, persistentProjectileEntity)
     }
 }
