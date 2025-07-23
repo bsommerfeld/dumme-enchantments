@@ -6,3 +6,6 @@ accessible class net/minecraft/client/render/RenderPhase$Texture
 accessible method net/minecraft/entity/LivingEntity calcGlidingVelocity (Lnet/minecraft/util/math/Vec3d;)Lnet/minecraft/util/math/Vec3d;
 accessible method net/minecraft/entity/LivingEntity checkGlidingCollision (DD)V
 accessible method net/minecraft/entity/LivingEntity travelMidAir (Lnet/minecraft/util/math/Vec3d;)V
+accessible method net/minecraft/client/render/item/HeldItemRenderer applyEquipOffset (Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V
+accessible method net/minecraft/client/render/item/HeldItemRenderer applyEatOrDrinkTransformation (Lnet/minecraft/client/util/math/MatrixStack;FLnet/minecraft/util/Arm;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;)V
+accessible method net/minecraft/entity/LivingEntity getDeathSound ()Lnet/minecraft/sound/SoundEvent;
