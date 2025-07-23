@@ -28,16 +28,15 @@ void main() {
         // Number of potential drops (in a grid)
         vec2 x = InSize * r * 0.015;
         
-        // Phase calculation with noise displacement
-        vec2 p = 6.28318530718 * u * x + (n - 0.5) * 2.0;
+        vec2 p = 6.28 * u * x + (n - 0.5) * 2.0;
         vec2 s = sin(p);
         
         // Current drop properties. Coordinates are rounded to ensure a
         // consistent value among the fragments of a given drop.
         vec4 d = texture(NoiseSampler, round(u * x - 0.25) / x);
         
-        // Drop shape and fading - THIS is where GameTime is used!
-        float t = (s.x + s.y) * max(0.0, 1.0 - fract(GameTime * 2400.0 * (d.b + 0.1) + d.g) * 2.0);
+        // Drop shape and fading - EXACT like original (GameTime * 1200 for good speed)
+        float t = (s.x + s.y) * max(0.0, 1.0 - fract(GameTime * 1200.0 * (d.b + 0.1) + d.g) * 2.0);
         
         // d.r -> only x% of drops are kept on, with x depending on the size of drops
         if (d.r < (5.0 - r) * 0.08 && t > 0.5) {

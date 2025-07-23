@@ -76,8 +76,8 @@
                     "sampler_name": "Noise",
                     "bilinear": true,
                     "location": "enchantments:noise",
-                    "width": 232,
-                    "height": 120
+                    "width": 1024,
+                    "height": 1024
                 }
             ],
             "output": "minecraft:main"
