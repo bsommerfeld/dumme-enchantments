@@ -23,6 +23,32 @@ void main() {
     // Base color
     fragColor = texture(InSampler, u);
     
+    // WINDSHIELD WIPER EFFECT
+    // Wiper center position (bottom center - like a car windshield)
+    vec2 wiperCenter = vec2(0.5, 0.0);
+    
+    // Calculate angle from wiper center to current pixel
+    vec2 toPixel = u - wiperCenter;
+    float pixelAngle = atan(toPixel.x, toPixel.y); // Swapped x,y for vertical orientation
+    
+    // Wiper animation - sweeps from -60° to +60° (120° total)
+    float wiperTime = GameTime * 400.0; // Slower speed for realism
+    float wiperAngle = sin(wiperTime) * 1.04719755; // ±60 degrees in radians
+    
+    // Wiper width (in radians)
+    float wiperWidth = 0.174532925; // ~10 degrees
+    
+    // Distance from wiper center
+    float pixelDistance = length(toPixel);
+    
+    // Check if pixel is in wiped area (centered around 0° = upward direction)
+    bool inWipedArea = abs(pixelAngle - wiperAngle) < wiperWidth && pixelDistance < 0.9 && toPixel.y > 0.0;
+    
+    // Skip raindrop effect if in wiped area
+    if (inWipedArea) {
+        return; // Just show the clean base color
+    }
+    
     // Loop through the different inverse sizes of drops
     for (float r = 4.0; r > 0.0; r--) {
         // Number of potential drops (in a grid)
