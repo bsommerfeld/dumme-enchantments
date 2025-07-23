@@ -65,19 +65,19 @@
             "output": "final"
         },
         {
-            "vertex_shader": "minecraft:post/blit",
-            "fragment_shader": "minecraft:post/blit",
+            "vertex_shader": "minecraft:post/raindrop",
+            "fragment_shader": "minecraft:post/raindrop",
             "inputs": [
                 {
                     "sampler_name": "In",
                     "target": "final"
-                }
-            ],
-            "uniforms": [
+                },
                 {
-                    "name": "ColorModulate",
-                    "type": "vec4",
-                    "values": [ 1.0, 1.0, 1.0, 1.0 ]
+                    "sampler_name": "Noise",
+                    "bilinear": true,
+                    "location": "enchantments:noise",
+                    "width": 232,
+                    "height": 120
                 }
             ],
             "output": "minecraft:main"
