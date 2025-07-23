@@ -3,13 +3,12 @@
 // Raindrop Post-Processing Shader
 // Ported from Shadertoy: https://www.shadertoy.com/view/ldSBWW
 // Author: Élie Michel (Original), Ported for Minecraft 1.21.5
-// License: CC BY 3.0
 
-uniform sampler2D InSampler;      // Main game render (iChannel0) 
+uniform sampler2D InSampler;      // Main game render (iChannel0)
 uniform sampler2D NoiseSampler;   // Noise texture for displacement (iChannel1)
 
 uniform vec2 InSize;              // Screen resolution (iResolution.xy)
-uniform float Time;               // Game time in seconds (iTime)
+uniform float GameTime;           // Game time in seconds (iTime)
 
 in vec2 texCoord;                 // Screen coordinates
 
@@ -21,7 +20,7 @@ void main() {
     // Get displacement from noise texture
     vec2 n = texture(NoiseSampler, u * 0.1).rg;
     
-    // Base color with slight blur/mip level
+    // Base color
     fragColor = texture(InSampler, u);
     
     // Loop through the different inverse sizes of drops
@@ -37,8 +36,8 @@ void main() {
         // consistent value among the fragments of a given drop.
         vec4 d = texture(NoiseSampler, round(u * x - 0.25) / x);
         
-        // Drop shape and fading
-        float t = (s.x + s.y) * max(0.0, 1.0 - fract(Time * (d.b + 0.1) + d.g) * 2.0);
+        // Drop shape and fading - THIS is where GameTime is used!
+        float t = (s.x + s.y) * max(0.0, 1.0 - fract(GameTime * 2400.0 * (d.b + 0.1) + d.g) * 2.0);
         
         // d.r -> only x% of drops are kept on, with x depending on the size of drops
         if (d.r < (5.0 - r) * 0.08 && t > 0.5) {
