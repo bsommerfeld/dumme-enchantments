@@ -3,9 +3,12 @@ package gg.norisk.enchantments.impl.fork
 import com.mojang.brigadier.context.CommandContext
 import gg.norisk.datatracker.entity.getSyncedData
 import gg.norisk.datatracker.entity.setSyncedData
+import gg.norisk.enchantments.EnchantmentRegistry
+import gg.norisk.enchantments.EnchantmentUtils.getLevel
 import gg.norisk.enchantments.EnchantmentUtils.sound
 import gg.norisk.enchantments.StupidEnchantments
 import gg.norisk.enchantments.command.EnchantmentsCommand.default
+import gg.norisk.enchantments.command.EnchantmentsCommand.getEntry
 import gg.norisk.enchantments.impl.schleuder.SchleuderEnchantment.toRadian
 import gg.norisk.enchantments.utils.EntityTypeSerializer
 import gg.norisk.utils.ext.EntityRenderStateExt
@@ -21,26 +24,29 @@ import net.minecraft.client.render.entity.EntityRenderer
 import net.minecraft.client.render.entity.state.EntityRenderState
 import net.minecraft.client.render.entity.state.LivingEntityRenderState
 import net.minecraft.client.render.entity.state.PlayerEntityRenderState
+import net.minecraft.client.render.entity.state.TridentEntityRenderState
 import net.minecraft.client.render.item.HeldItemRenderer
 import net.minecraft.client.render.item.ItemRenderState
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.component.DataComponentTypes
-import net.minecraft.component.type.ConsumableComponent.ConsumableSoundProvider
 import net.minecraft.component.type.NbtComponent
+import net.minecraft.enchantment.Enchantments
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.SpawnReason
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.projectile.TridentEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import net.minecraft.item.consume.UseAction
+import net.minecraft.item.SpawnEggItem
 import net.minecraft.server.command.ServerCommandSource
 import net.minecraft.sound.SoundEvents
 import net.minecraft.text.HoverEvent
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Arm
 import net.minecraft.util.Hand
+import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.RotationAxis
 import net.minecraft.world.World
@@ -50,20 +56,22 @@ import net.silkmc.silk.core.text.literal
 import net.silkmc.silk.core.text.literalText
 import net.silkmc.silk.nbt.set
 import org.joml.Quaternionf
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable
 import java.awt.Color
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.pow
 import kotlin.random.Random
+import net.minecraft.registry.Registries
 
 object ForkEnchantment {
 
     @Serializable
     data class ForkedEntity(
         @Serializable(with = EntityTypeSerializer::class) val entityType: EntityType<*>,
-        val customYaw: Float = 0f,
-        val customPitch: Float = 0f,
-        val customRoll: Float = 0f,
+        val customYaw: Float = Random.nextDouble(0.0, 360.0).toFloat(),
+        val customPitch: Float = Random.nextDouble(0.0, 360.0).toFloat(),
+        val customRoll: Float = Random.nextDouble(0.0, 360.0).toFloat(),
     )
 
     const val FORK_NBT_KEY = "Fork"
@@ -71,11 +79,13 @@ object ForkEnchantment {
     fun initServer() {
         UseItemCallback.EVENT.register { player, world, hand ->
             val stack = player.getStackInHand(hand)
-            if (stack.isOf(Items.TRIDENT) && stack.getForkedEntities().isNotEmpty()) {
+            if (stack.isOf(Items.TRIDENT) && stack.getForkedEntities()
+                    .isNotEmpty() && EnchantmentRegistry.fork.getLevel(stack) != null
+            ) {
                 if (player.isSneaking) {
                     player.nrc_isEatingFork = true
-                    player.nrc_nextForkEatingTime = player.age + Random.nextInt(5, 20)
-                    player.sendMessage("START".literal, false)
+                    player.nrc_nextForkEatingTime = player.age + Random.nextInt(10, 30)
+                    //player.sendMessage("START".literal, false)
                 }
             }
             return@register ActionResult.PASS
@@ -106,10 +116,7 @@ object ForkEnchantment {
         itemStack.set(DataComponentTypes.CUSTOM_DATA, component.apply {
             //val randomEntity = Registries.ENTITY_TYPE.get(Random.nextInt(Registries.ENTITY_TYPE.ids.size))
             val randomEntity = EntityType.PIG
-            val randomPitch = Random.nextDouble(0.0, 360.0).toFloat()
-            val randomYaw = Random.nextDouble(0.0, 360.0).toFloat()
-            val randomRoll = Random.nextDouble(0.0, 360.0).toFloat()
-            forkedEntities.add(ForkedEntity(randomEntity, randomYaw, randomPitch, randomRoll))
+            forkedEntities.add(ForkedEntity(randomEntity))
             it.set(FORK_NBT_KEY, Json.encodeToString(forkedEntities))
         })
     }
@@ -117,7 +124,9 @@ object ForkEnchantment {
     fun ItemStack.getForkedEntities(): MutableList<ForkedEntity> {
         val component = getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
         val currentValue = component.nbt.getString(FORK_NBT_KEY).getOrNull()
-        return if (currentValue != null) Json.decodeFromString<MutableList<ForkedEntity>>(currentValue) else mutableListOf()
+        return if (currentValue != null) runCatching<MutableList<ForkedEntity>> { Json.decodeFromString(currentValue) }.getOrDefault(
+            mutableListOf()
+        ) else mutableListOf()
     }
 
     fun handleFirstPersonRendering(
@@ -153,10 +162,6 @@ object ForkEnchantment {
 
             setupArrowTransformation(
                 matrices,
-                hand,
-                swingProgress,
-                tickProgress,
-                itemStack,
                 fakeEntity,
                 forkedEntity,
                 false
@@ -186,13 +191,10 @@ object ForkEnchantment {
 
     private fun setupArrowTransformation(
         matrices: MatrixStack,
-        hand: Hand,
-        swingProgress: Float,
-        tickProgress: Float,
-        item: ItemStack,
         entity: Entity,
         forkedEntity: ForkedEntity,
-        isThirdPerson: Boolean
+        isThirdPerson: Boolean,
+        isTridentEntity: Boolean = false
     ) {
         // Scale first (affects all subsequent transformations)
         val baseScale = 0.3f
@@ -201,6 +203,9 @@ object ForkEnchantment {
             matrices.translate(1f, 1.3f, -0.8f)
         } else {
             matrices.translate(0f, 1.9f, 0f)
+            if (isTridentEntity) {
+                matrices.translate(0f, -3f, 0f)
+            }
         }
 
         // === ROTATION AROUND ENTITY CENTER ===
@@ -234,7 +239,26 @@ object ForkEnchantment {
     private fun <S : ServerCommandSource> CommandContext<S>.fork() {
         val player = this.source.playerOrThrow
 
-        player.giveItemStack(itemStack(Items.TRIDENT) {})
+        player.giveItemStack(itemStack(Items.TRIDENT) {
+            addEnchantment(EnchantmentRegistry.fork.getEntry(player.world), 1)
+        })
+        player.inventory.setStack(35, itemStack(Items.TRIDENT) {
+            addEnchantment(EnchantmentRegistry.fork.getEntry(player.world), 1)
+            addEnchantment(Enchantments.LOYALTY.getEntry(player.world), 1)
+        })
+
+        // Get all spawn eggs dynamically from registry
+        val spawnEggs = Registries.ITEM.stream()
+            .filter { item -> item is SpawnEggItem }
+            .toList()
+
+        // Fill slots 1-8 (remaining hotbar slots) with random spawn eggs
+        for (slot in 1..8) {
+            val randomEgg = spawnEggs.random()
+            player.inventory.setStack(slot, itemStack(randomEgg) {
+                count = 64
+            })
+        }
 
         player.sendMessage(literalText {
             text("§b§lFork Enchantment - ")
@@ -244,7 +268,7 @@ object ForkEnchantment {
                 hoverEvent = HoverEvent.ShowText("Hover über die Nummern für Details".literal)
             }
             text("\n§71. ") {
-                hoverEvent = HoverEvent.ShowText("Du hast noch einen extra Bogen im Inventar".literal)
+                hoverEvent = HoverEvent.ShowText("Zuerst sneaken dann rechtsklick zum essen der Mobs".literal)
             }
         })
     }
@@ -335,7 +359,11 @@ object ForkEnchantment {
             matrices.push()
 
 
-            setupArrowTransformation(matrices, hand, 0f, tickProgress, itemStack, fakeEntity, forkedEntity, true)
+            if (player.isUsingItem) {
+                matrices.translate(0f, -1.4f, 0f)
+            }
+
+            setupArrowTransformation(matrices, fakeEntity, forkedEntity, true)
 
             // Create render state for the entity
             val renderState = entityRenderer.createRenderState()
@@ -368,7 +396,7 @@ object ForkEnchantment {
                     spawnParticlesAndPlaySound(random, this, activeItem, 5)
                 }
                 if (age >= nrc_nextForkEatingTime) {
-                    player.nrc_nextForkEatingTime = player.age + Random.nextInt(5, 20)
+                    player.nrc_nextForkEatingTime = player.age + Random.nextInt(10, 30)
                     val forkedEntity = forkedEntities.removeLast()
                     val entity = forkedEntity.entityType.create(world, SpawnReason.MOB_SUMMONED) ?: return
                     val itemStack = activeItem
@@ -376,6 +404,7 @@ object ForkEnchantment {
                     itemStack.set(DataComponentTypes.CUSTOM_DATA, component.apply {
                         it.set(FORK_NBT_KEY, Json.encodeToString(forkedEntities))
                     })
+                    player.hungerManager.add(4, 4f)
                     player.sound(SoundEvents.ENTITY_PLAYER_BURP, pitch = random.nextTriangular(1.0f, 0.2f))
                     val livingEntity = entity as? LivingEntity?
                     if (livingEntity != null) {
@@ -390,7 +419,7 @@ object ForkEnchantment {
         } else {
             if (nrc_isEatingFork) {
                 nrc_isEatingFork = false
-                (this as? PlayerEntity?)?.sendMessage("STOP".literal, false)
+                //(this as? PlayerEntity?)?.sendMessage("STOP".literal, false)
             }
         }
         //println("Ticking: $stack")
@@ -406,9 +435,9 @@ object ForkEnchantment {
         val g = random.nextTriangular(1.0f, 0.2f)
         val j = f
         val k = g
-        /*if (this.hasConsumeParticles) {
-            user.spawnItemParticles(stack, particleCount)
-        }*/
+        if (true) {
+            user.spawnItemParticles(Items.PORKCHOP.defaultStack, particleCount)
+        }
 
         val soundEvent = SoundEvents.ENTITY_GENERIC_EAT.value()
         user.playSound(soundEvent, j, k)
@@ -424,6 +453,12 @@ object ForkEnchantment {
         set(value) {
             this.setSyncedData("${StupidEnchantments.MOD_ID}:nrc_nextForkEatingTime", value)
         }
+    var TridentEntity.nrc_forkedEntities: String?
+        get() = this.getSyncedData("${StupidEnchantments.MOD_ID}:nrc_forkedEntities")
+        set(value) {
+            this.setSyncedData("${StupidEnchantments.MOD_ID}:nrc_forkedEntities", value)
+        }
+
 
     fun onStoppedUsing(
         stack: ItemStack,
@@ -438,6 +473,76 @@ object ForkEnchantment {
             return
         }
         player.nrc_isEatingFork = false
-        player.sendMessage("STOP".literal, false)
+        //player.sendMessage("STOP".literal, false)
+    }
+
+    fun TridentEntity.onEntityHit(entityHitResult: EntityHitResult, ci: CallbackInfo) {
+        if (EnchantmentRegistry.fork.getLevel(this.itemStack) == null) return
+        val forkedEntities = this.itemStack.getForkedEntities()
+        val component = itemStack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT)
+        forkedEntities.add(ForkedEntity(entityHitResult.entity.type))
+        itemStack.set(DataComponentTypes.CUSTOM_DATA, component.apply {
+            it.set(FORK_NBT_KEY, Json.encodeToString(forkedEntities))
+        })
+        this.nrc_forkedEntities = Json.encodeToString(forkedEntities)
+        if (entityHitResult.entity.type != EntityType.PLAYER) {
+            entityHitResult.entity.discard()
+        }
+    }
+
+    fun handleTridentEntityRendering(
+        tridentEntityRenderState: TridentEntityRenderState,
+        matrices: MatrixStack,
+        vertexConsumers: VertexConsumerProvider,
+        light: Int
+    ) {
+        val tridentEntity =
+            (tridentEntityRenderState as? EntityRenderStateExt?)?.nrc_entity as? TridentEntity? ?: return
+        if (tridentEntity.nrc_forkedEntities == null) {
+            return
+        }
+        val data = runCatching<MutableList<ForkedEntity>> {
+            Json.decodeFromString(tridentEntity.nrc_forkedEntities ?: "")
+        }.getOrDefault(mutableListOf())
+        val tickProgress = MinecraftClient.getInstance().renderTickCounter.getTickProgress(false)
+
+        for (forkedEntity in data) {
+            val client = MinecraftClient.getInstance()
+            // Get the entity renderer
+            val entityType = forkedEntity.entityType
+            val fakeEntity = entityType.create(tridentEntity.world, SpawnReason.MOB_SUMMONED) ?: continue
+            val entityRenderDispatcher = client.entityRenderDispatcher
+            val entityRenderer =
+                entityRenderDispatcher.getRenderer(fakeEntity) as? EntityRenderer<Entity, EntityRenderState> ?: continue
+
+            matrices.push()
+            setupArrowTransformation(matrices, fakeEntity, forkedEntity, true, isTridentEntity = true)
+
+            // Create render state for the entity
+            val renderState = entityRenderer.createRenderState()
+            //val fakePlayer = FakePlayer(MinecraftClient.getInstance().world!!, player.gameProfile, player)
+            entityRenderer.updateRenderState(fakeEntity, renderState, tickProgress)
+            (renderState as? LivingEntityRenderState?)?.apply {
+                //relativeHeadYaw = player.headYaw
+                relativeHeadYaw = 0f
+                this.pitch = 0f
+            }
+            (renderState as? PlayerEntityRenderState?)?.apply {
+                //relativeHeadYaw = player.headYaw
+                relativeHeadYaw = 0f
+                this.pitch = 0f
+            }
+
+            // Render the entity
+            entityRenderer.render(renderState, matrices, vertexConsumers, light)
+            matrices.pop()
+        }
+    }
+
+    fun TridentEntity.onInitDataTracker() {
+        if (!world.isClient) {
+            val forkedEntities = this.itemStack?.getForkedEntities() ?: return
+            this.nrc_forkedEntities = Json.encodeToString(forkedEntities)
+        }
     }
 }
