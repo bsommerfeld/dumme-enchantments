@@ -29,6 +29,8 @@ object SoundRegistry {
     val SLINGSHOT_RELEASE = register("slingshot_release")
     val SLINGTSHOT_STRETCH = register("slingshot_stretch")
     val BONK = register("bonk")
+    val WHIPER = register("whiper")
+    val LIGHTSWITCH_OFF = register("lightswitch_off")
 
     fun init() {
     }

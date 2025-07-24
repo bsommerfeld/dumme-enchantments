@@ -6,6 +6,7 @@ import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.impl.fork.ForkEnchantment
 import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
 import gg.norisk.enchantments.impl.schleuder.SchleuderEnchantment
+import gg.norisk.enchantments.impl.whiper.WhiperEnchantment
 import gg.norisk.enchantments.mixin.client.GameRendererAccessor
 import gg.norisk.enchantments.sound.SoundRegistry
 import gg.norisk.satisfying.*
@@ -40,6 +41,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         //MedusaEnchantment.initServer()
         //BalloonEnchantment.initServer()
         AimBotEnchantment.initServer()
+        WhiperEnchantment.initServer()
         //RamEnchantment.initServer()
         //SatisfyingExperience.initServer()
         //SatisfyingChainReaction.initServer()
@@ -61,16 +63,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         HelicopterEnchantment.initClient()
         HelicopterEnchantmentV2.initClient()
         FreezeEnchantment.initClient()
-        clientCommand("raintest") {
-            runs {
-                (MinecraftClient.getInstance().gameRenderer as GameRendererAccessor).invokeSetPostProcessor(
-                    Identifier.of(
-                        MOD_ID,
-                        "raindrop"
-                    )
-                )
-            }
-        }
+        WhiperEnchantment.initClient()
         //MemeEnchantment.initClient()
         //SatisfyingTrail.initClient()
         //SatisfyingExperience.initClient()

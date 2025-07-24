@@ -40,7 +40,8 @@
     "satisfying.StructureTemplateMixin",
     "satisfying.TreeFeatureMixin",
     "schleuder.BowItemMixin",
-    "schleuder.PersistentProjectileEntityMixin"
+    "schleuder.PersistentProjectileEntityMixin",
+    "whiper.EntityMixin"
   ],
   "client": [
     "client.AnimalModelMixin",
@@ -76,6 +77,8 @@
     "helicopterv2.CameraMixin",
     "helicopterv2.PlayerEntityModelMixin",
     "schleuder.HeldItemRendererMixin",
-    "schleuder.LivingEntityRendererMixin"
+    "schleuder.LivingEntityRendererMixin",
+    "whiper.ShaderProgramMixin_v1_21_5",
+    "whiper.WorldRendererMixin"
   ]
 }

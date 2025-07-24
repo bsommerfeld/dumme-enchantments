@@ -24,6 +24,16 @@
       "enchantments:trash_open"
     ]
   },
+  "whiper": {
+    "sounds": [
+      "enchantments:whiper"
+    ]
+  },
+  "lightswitch_off": {
+    "sounds": [
+      "enchantments:lightswitch_off"
+    ]
+  },
   "trash_close": {
     "sounds": [
       "enchantments:trash_close"
