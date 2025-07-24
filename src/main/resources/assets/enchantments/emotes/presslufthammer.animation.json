@@ -1,0 +1,48 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"presslufthammer": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.2917,
+			"lockVanillaBones": {
+				"bipedRig": false,
+				"bipedHead": false,
+				"bipedBody": false,
+				"bipedLeftArm": true,
+				"bipedRightArm": true,
+				"bipedLeftLeg": true,
+				"bipedRightLeg": true
+			},
+			"bones": {
+				"bipedRig": {
+					"position": {
+						"vector": [0, "math.sin(query.anim_time * 4000) * 2", 0]
+					}
+				},
+				"bipedRightArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [-25.68482, -10.17781, -20.17393],
+							"easing": "easeOutQuart"
+						}
+					}
+				},
+				"bipedLeftArm": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2917": {
+							"vector": [-25.68482, 10.17781, 20.17393],
+							"easing": "easeOutQuart"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

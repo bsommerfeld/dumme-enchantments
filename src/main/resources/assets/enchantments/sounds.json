@@ -39,6 +39,11 @@
       "enchantments:trash_close"
     ]
   },
+  "jackhammer": {
+    "sounds": [
+      "enchantments:jackhammer"
+    ]
+  },
   "balloon_blow_up": {
     "sounds": [
       "enchantments:balloon_blow_up"

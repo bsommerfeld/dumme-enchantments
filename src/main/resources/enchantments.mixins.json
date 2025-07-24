@@ -44,6 +44,8 @@
     "whiper.EntityMixin"
   ],
   "client": [
+    "camerashaker.CameraMixin",
+    "camerashaker.GameRendererMixin",
     "client.AnimalModelMixin",
     "client.ClientPlayerEntityMixin",
     "client.ClientWorldMixin",
@@ -76,6 +78,7 @@
     "freeze.LivingEntityRendererMixin",
     "helicopterv2.CameraMixin",
     "helicopterv2.PlayerEntityModelMixin",
+    "presslufthammer.HeldItemFeatureRendererMixin",
     "schleuder.HeldItemRendererMixin",
     "schleuder.LivingEntityRendererMixin",
     "whiper.ShaderProgramMixin_v1_21_5",

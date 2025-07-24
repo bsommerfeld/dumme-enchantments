@@ -5,10 +5,13 @@ import gg.norisk.enchantments.command.SatisfyingCommand
 import gg.norisk.enchantments.impl.*
 import gg.norisk.enchantments.impl.fork.ForkEnchantment
 import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
+import gg.norisk.enchantments.impl.presslufthammer.BlockBreaker
+import gg.norisk.enchantments.impl.presslufthammer.PressLuftHammer
 import gg.norisk.enchantments.impl.schleuder.SchleuderEnchantment
 import gg.norisk.enchantments.impl.whiper.WhiperEnchantment
 import gg.norisk.enchantments.mixin.client.GameRendererAccessor
 import gg.norisk.enchantments.sound.SoundRegistry
+import gg.norisk.enchantments.utils.CameraShaker
 import gg.norisk.satisfying.*
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.ModInitializer
@@ -42,6 +45,9 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         //BalloonEnchantment.initServer()
         AimBotEnchantment.initServer()
         WhiperEnchantment.initServer()
+        CameraShaker.initServer()
+        PressLuftHammer.initServer()
+        BlockBreaker.initServer()
         //RamEnchantment.initServer()
         //SatisfyingExperience.initServer()
         //SatisfyingChainReaction.initServer()
@@ -58,6 +64,8 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         //TrashEnchantment.initClient()
         //DopaminEnchantment.initClient()
         GlitchEnchantment.initClient()
+        CameraShaker.initClient()
+        PressLuftHammer.initClient()
         //SlipperyEnchantment.initClient()
         VerificationEnchantment.initClient()
         HelicopterEnchantment.initClient()
