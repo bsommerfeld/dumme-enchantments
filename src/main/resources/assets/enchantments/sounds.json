@@ -54,6 +54,11 @@
       "enchantments:balloon_pop"
     ]
   },
+  "boomerang": {
+    "sounds": [
+      "enchantments:boomerang"
+    ]
+  },
   "domino_fall": {
     "sounds": [
       "enchantments:domino_fall"

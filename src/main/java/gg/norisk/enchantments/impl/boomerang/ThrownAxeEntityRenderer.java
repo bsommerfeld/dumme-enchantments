@@ -1,5 +1,6 @@
 package gg.norisk.enchantments.impl.boomerang;
 
+import gg.norisk.enchantments.utils.Animation;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.OverlayTexture;
@@ -20,8 +21,12 @@ public class ThrownAxeEntityRenderer extends EntityRenderer<ThrownAxeEntity, Thr
     @Override
     public void render(ThrownAxeEntityRenderState state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         matrices.push();
+        matrices.translate(0.0, 0.25f, 0.0);
         matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(90.0F - state.entity.getYaw()));
-        matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(state.entity.getTicksActive() * 15));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0F));
+        //matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90.0F));
+        var tickDelta = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(false);
+        matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(state.entity.getTicksActiveLerped(tickDelta)));
         //noinspection UnstableApiUsage
         ItemStack stack = state.entity.getAttachedOrElse(AxeThrowAttachments.THROWN_AXE_ITEM_STACK, state.entity.getItemStack()).copy();
         if (state.entity.isEnchanted()) {
