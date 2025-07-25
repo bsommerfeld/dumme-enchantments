@@ -3,15 +3,18 @@ package gg.norisk.enchantments.impl.boomerang
 import gg.norisk.enchantments.sound.BoomerangSoundInstance
 import gg.norisk.enchantments.utils.Animation
 import net.minecraft.client.MinecraftClient
+import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.EntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.TridentEntity
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.util.math.MathHelper
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.world.World
+import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.time.Duration.Companion.seconds
 
@@ -75,6 +78,10 @@ class ThrownAxeEntity : TridentEntity {
             return true
         }
         if (isOwner(player)) {
+            val damageSource = this.getDamageSources().trident(this, this.owner)
+            if (this.getWorld() is ServerWorld && velocity.horizontalLengthSquared() > 0) {
+                player.damage(this.world as ServerWorld, damageSource, 4f)
+            }
             val inventory = player.getInventory()
             try {
                 val stack = inventory.getStack(this.slot)

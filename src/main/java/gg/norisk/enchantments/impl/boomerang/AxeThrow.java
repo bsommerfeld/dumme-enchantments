@@ -1,15 +1,11 @@
 package gg.norisk.enchantments.impl.boomerang;
 
+import gg.norisk.enchantments.EnchantmentRegistry;
+import gg.norisk.enchantments.EnchantmentUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.event.player.UseItemCallback;
-import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
-import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -45,7 +41,6 @@ public class AxeThrow implements ModInitializer {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canBeThrown(ItemStack stack) {
-        return true;
-        //return stack.isIn(AxeThrowTags.THROWABLE) && stack.getOrDefault(AxeThrowDataComponentTypes.CAN_THROW, false);
+        return EnchantmentUtils.INSTANCE.getLevel(EnchantmentRegistry.INSTANCE.getBoomerang(), stack) != null;
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.TridentItem;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -21,8 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(TridentItem.class)
 public abstract class TridentItemMixin<T extends ProjectileEntity> {
-
-
+    
     @WrapOperation(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;spawnWithVelocity(Lnet/minecraft/entity/projectile/ProjectileEntity$ProjectileCreator;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;FFF)Lnet/minecraft/entity/projectile/ProjectileEntity;"))
     public T invokeThrownAxeConstructor(ProjectileEntity.ProjectileCreator<T> creator, ServerWorld serverWorld, ItemStack stack, LivingEntity living, float roll, float power, float divergence, Operation<T> original, @Local PlayerEntity player) {
         if (!AxeThrow.canBeThrown(stack)) {
@@ -43,14 +43,14 @@ public abstract class TridentItemMixin<T extends ProjectileEntity> {
         return original.call(new ProjectileEntity.ProjectileCreator<>() {
             @Override
             public ProjectileEntity create(ServerWorld world, LivingEntity shooter, ItemStack stackCreate) {
-                return ThrownAxeEntity.fromOwnerAndItemStack(world, shooter, stack, finalSlot);
+                return ThrownAxeEntity.fromOwnerAndItemStack(world, shooter, stackCreate, finalSlot);
             }
         }, serverWorld, stack, living, roll, power, divergence);
     }
 
     @WrapOperation(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSoundFromEntity(Lnet/minecraft/entity/Entity;Lnet/minecraft/entity/Entity;Lnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V"))
     private void useAxeThrowSound(World instance, Entity source, Entity entity, SoundEvent sound, SoundCategory category, float volume, float pitch, Operation<Void> original, ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
-        if (AxeThrow.canBeThrown(stack)) {
+        if (AxeThrow.canBeThrown(stack) || !stack.isOf(Items.TRIDENT)) {
             return;
         }
         original.call(instance, source, entity, sound, category, volume, pitch);

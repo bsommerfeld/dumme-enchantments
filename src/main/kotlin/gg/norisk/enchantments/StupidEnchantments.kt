@@ -3,6 +3,7 @@ package gg.norisk.enchantments
 import gg.norisk.enchantments.command.EnchantmentsCommand
 import gg.norisk.enchantments.command.SatisfyingCommand
 import gg.norisk.enchantments.impl.*
+import gg.norisk.enchantments.impl.boomerang.BoomerangEnchantment
 import gg.norisk.enchantments.impl.fork.ForkEnchantment
 import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
 import gg.norisk.enchantments.impl.presslufthammer.BlockBreaker
@@ -34,6 +35,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         //ColossalEnchantment.initServer()
         //HotEnchantment.initServer()
         HelicopterEnchantment.initServer()
+        BoomerangEnchantment.initServer()
         ForkEnchantment.initServer()
         HelicopterEnchantmentV2.initServer()
         FreezeEnchantment.initServer()
