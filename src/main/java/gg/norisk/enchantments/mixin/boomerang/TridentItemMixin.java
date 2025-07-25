@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(TridentItem.class)
 public abstract class TridentItemMixin<T extends ProjectileEntity> {
-    
+
     @WrapOperation(method = "onStoppedUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileEntity;spawnWithVelocity(Lnet/minecraft/entity/projectile/ProjectileEntity$ProjectileCreator;Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/LivingEntity;FFF)Lnet/minecraft/entity/projectile/ProjectileEntity;"))
     public T invokeThrownAxeConstructor(ProjectileEntity.ProjectileCreator<T> creator, ServerWorld serverWorld, ItemStack stack, LivingEntity living, float roll, float power, float divergence, Operation<T> original, @Local PlayerEntity player) {
         if (!AxeThrow.canBeThrown(stack)) {

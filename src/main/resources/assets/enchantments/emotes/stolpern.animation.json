@@ -1,0 +1,26 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"stolpern": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.4,
+			"disableOnHit": true,
+			"disableOnMove": false,
+			"immersiveCamera": true,
+			"bones": {
+				"bipedRig": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4": {
+							"vector": [82.5, 0, 0],
+							"easing": "easeInOutBack"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

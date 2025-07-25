@@ -9,6 +9,7 @@ import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
 import gg.norisk.enchantments.impl.presslufthammer.BlockBreaker
 import gg.norisk.enchantments.impl.presslufthammer.PressLuftHammer
 import gg.norisk.enchantments.impl.schleuder.SchleuderEnchantment
+import gg.norisk.enchantments.impl.stolper.StolperEnchantment
 import gg.norisk.enchantments.impl.whiper.WhiperEnchantment
 import gg.norisk.enchantments.mixin.client.GameRendererAccessor
 import gg.norisk.enchantments.sound.SoundRegistry
@@ -36,6 +37,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         //HotEnchantment.initServer()
         HelicopterEnchantment.initServer()
         BoomerangEnchantment.initServer()
+        StolperEnchantment.initServer()
         ForkEnchantment.initServer()
         HelicopterEnchantmentV2.initServer()
         FreezeEnchantment.initServer()

@@ -32,6 +32,7 @@ object SoundRegistry {
     val WHIPER = register("whiper")
     val LIGHTSWITCH_OFF = register("lightswitch_off")
     val BOOMERANG = register("boomerang")
+    val STOLPERN = register("stolpern")
     val JACKHAMMER = register("jackhammer")
 
     fun init() {

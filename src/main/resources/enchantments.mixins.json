@@ -44,6 +44,8 @@
     "satisfying.TreeFeatureMixin",
     "schleuder.BowItemMixin",
     "schleuder.PersistentProjectileEntityMixin",
+    "stolper.EntityMixin",
+    "stolper.LivingEntityMixin",
     "whiper.EntityMixin"
   ],
   "client": [
