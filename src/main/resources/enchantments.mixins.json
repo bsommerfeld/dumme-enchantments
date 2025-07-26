@@ -23,6 +23,8 @@
     "ServerPlayerEntityMixin",
     "ServerWorldMixin",
     "ShovelItemMixin",
+    "antiknockback.LivingEntityMixin",
+    "antiknockback.PlayerEntityMixin",
     "boomerang.ItemMixin",
     "boomerang.TridentEntityMixin",
     "boomerang.TridentItemMixin",

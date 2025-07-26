@@ -3,6 +3,7 @@ package gg.norisk.enchantments
 import gg.norisk.enchantments.command.EnchantmentsCommand
 import gg.norisk.enchantments.command.SatisfyingCommand
 import gg.norisk.enchantments.impl.*
+import gg.norisk.enchantments.impl.antiknockback.AntiKnockbackEnchantment
 import gg.norisk.enchantments.impl.boomerang.BoomerangEnchantment
 import gg.norisk.enchantments.impl.fork.ForkEnchantment
 import gg.norisk.enchantments.impl.freeze.FreezeEnchantment
@@ -38,6 +39,7 @@ object StupidEnchantments : ModInitializer, ClientModInitializer {
         HelicopterEnchantment.initServer()
         BoomerangEnchantment.initServer()
         StolperEnchantment.initServer()
+        AntiKnockbackEnchantment.initServer()
         ForkEnchantment.initServer()
         HelicopterEnchantmentV2.initServer()
         FreezeEnchantment.initServer()
