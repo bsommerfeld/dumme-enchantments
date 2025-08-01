@@ -4,18 +4,6 @@
     "translate": "Fork"
   },
   "effects": {
-    "minecraft:trident_return_acceleration": [
-      {
-        "effect": {
-          "type": "minecraft:add",
-          "value": {
-            "type": "minecraft:linear",
-            "base": 1,
-            "per_level_above_first": 1
-          }
-        }
-      }
-    ]
   },
   "max_cost": {
     "base": 50,

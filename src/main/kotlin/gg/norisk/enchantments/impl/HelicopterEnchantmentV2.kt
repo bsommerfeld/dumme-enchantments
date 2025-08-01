@@ -78,19 +78,24 @@ data class HelicopterMovement(
             PowerConfig.EasingType.LINEAR -> {
                 PowerConfig.BASE_POWER_GAIN + (powerPresses * PowerConfig.LINEAR_DIFFICULTY_SCALING)
             }
+
             PowerConfig.EasingType.EXPONENTIAL -> {
-                PowerConfig.BASE_POWER_GAIN * Math.pow(PowerConfig.EXPONENTIAL_BASE.toDouble(), powerPresses.toDouble()).toFloat()
+                PowerConfig.BASE_POWER_GAIN * Math.pow(PowerConfig.EXPONENTIAL_BASE.toDouble(), powerPresses.toDouble())
+                    .toFloat()
             }
+
             PowerConfig.EasingType.EASE_IN_CUBIC -> {
                 val t = (powerPresses.toFloat() / PowerConfig.MAX_PRESSES_FOR_EASING).coerceIn(0f, 1f)
                 val easedValue = t * t * t // cubic easing
                 PowerConfig.BASE_POWER_GAIN + (easedValue * PowerConfig.EASING_MAX_GAIN)
             }
+
             PowerConfig.EasingType.EASE_OUT_QUAD -> {
                 val t = (powerPresses.toFloat() / PowerConfig.MAX_PRESSES_FOR_EASING).coerceIn(0f, 1f)
                 val easedValue = 1f - (1f - t) * (1f - t) // quad ease-out
                 PowerConfig.BASE_POWER_GAIN + (easedValue * PowerConfig.EASING_MAX_GAIN)
             }
+
             PowerConfig.EasingType.CUSTOM_SMOOTH -> {
                 // Custom smooth curve - langsamer Start, dann beschleunigung, dann flach
                 val t = (powerPresses.toFloat() / PowerConfig.MAX_PRESSES_FOR_EASING).coerceIn(0f, 1f)
@@ -99,7 +104,7 @@ data class HelicopterMovement(
             }
         }
     }
-    
+
     /**
      * Berechnet Schwierigkeits-Multiplikator für nächsten Press
      */
@@ -134,14 +139,14 @@ data class HelicopterMovement(
             // === EASING TYPE ===
             enum class EasingType {
                 LINEAR,
-                EXPONENTIAL, 
+                EXPONENTIAL,
                 EASE_IN_CUBIC,
                 EASE_OUT_QUAD,
                 CUSTOM_SMOOTH
             }
-            
+
             var EASING_TYPE = EasingType.CUSTOM_SMOOTH // <- Hier ändern für verschiedene Curves!
-            
+
             // === BASIC SETTINGS ===
             var BASE_POWER_GAIN = 2f // Basis Power pro Press (war 1f)
             var STARTUP_THRESHOLD = 70f // Ab wieviel % Motor startet
@@ -186,13 +191,11 @@ object HelicopterEnchantmentV2 {
             HelicopterMovement.serializer(),
         )
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment) {
-            command("enchantments") {
-                literal("helicopterv2") {
-                    runs {
-                        this.default()
-                        this.helicopter()
-                    }
+        command("enchantments") {
+            literal("helicopterv2") {
+                runs {
+                    this.default()
+                    this.helicopter()
                 }
             }
         }
@@ -260,13 +263,17 @@ object HelicopterEnchantmentV2 {
                     MinecraftClient.getInstance().soundManager.play(HelicopterSoundInstanceV2(event.entity))
                 }
             }
-            
+
             if (event.key == "$MOD_ID:IsHelicopterFlying") {
                 if (!event.entity.world.isClient) return@listen
                 if (event.entity.isHelicopterFlying) {
-                    MinecraftClient.getInstance().soundManager.play(FlyingSoundInstance(event.entity as ClientPlayerEntity, {
-                        event.entity.isHelicopterFlying
-                    }))
+                    MinecraftClient.getInstance().soundManager.play(
+                        FlyingSoundInstance(
+                            event.entity as ClientPlayerEntity,
+                            {
+                                event.entity.isHelicopterFlying
+                            })
+                    )
                 }
             }
         }
@@ -385,13 +392,13 @@ object HelicopterEnchantmentV2 {
         val AFFECT_PLAYERS = false // Andere Spieler auch wegschleudern?
         val AFFECT_PASSIVE_MOBS = true // Passive Mobs (Kühe, Schafe, etc.)
         val AFFECT_HOSTILE_MOBS = true // Hostile Mobs
-        
+
         val playerPos = this.pos
         val world = this.world
 
         // === ENTITIES WEGSCHLEUDERN ===
         val nearbyEntities = world.getOtherEntities(this, this.boundingBox.expand(WIND_RADIUS))
-        
+
         for (entity in nearbyEntities) {
             // Skip basierend auf Entity-Type
             when {
@@ -399,23 +406,23 @@ object HelicopterEnchantmentV2 {
                 entity is net.minecraft.entity.passive.PassiveEntity && !AFFECT_PASSIVE_MOBS -> continue
                 entity is net.minecraft.entity.mob.HostileEntity && !AFFECT_HOSTILE_MOBS -> continue
             }
-            
+
             val distance = entity.pos.distanceTo(playerPos)
             if (distance <= WIND_RADIUS) {
                 // Berechne Push-Richtung (weg vom Spieler)
                 val direction = entity.pos.subtract(playerPos).normalize()
-                
+
                 // Kraft basierend auf Distanz (näher = stärker)
                 val forceFactor = (1.0 - (distance / WIND_RADIUS)).coerceAtLeast(0.0)
                 val pushForce = ENTITY_PUSH_FORCE * forceFactor
-                
+
                 // Wind-Velocity anwenden
                 val windVelocity = Vec3d(
                     direction.x * pushForce,
                     VERTICAL_PUSH_FORCE * forceFactor, // Leicht nach oben
                     direction.z * pushForce
                 )
-                
+
                 entity.addVelocity(windVelocity.x, windVelocity.y, windVelocity.z)
                 entity.velocityModified = true
             }
@@ -424,29 +431,29 @@ object HelicopterEnchantmentV2 {
         // === LEICHTE BLÖCKE ZERSTÖREN ===
         val centerPos = this.blockPos
         val blockRadius = BLOCK_BREAK_RADIUS.toInt()
-        
+
         for (x in -blockRadius..blockRadius) {
             for (y in -blockRadius..blockRadius) {
                 for (z in -blockRadius..blockRadius) {
                     val blockPos = centerPos.add(x, y, z)
                     val distance = blockPos.getSquaredDistance(centerPos)
-                    
+
                     if (distance <= BLOCK_BREAK_RADIUS * BLOCK_BREAK_RADIUS) {
                         val blockState = world.getBlockState(blockPos)
                         val block = blockState.block
-                        
+
                         // Prüfe Block-Tags für leichte Blöcke
                         val isLightBlock = blockState.isIn(net.minecraft.registry.tag.BlockTags.LEAVES) ||
-                                         blockState.isIn(net.minecraft.registry.tag.BlockTags.FLOWERS) ||
-                                         blockState.isIn(net.minecraft.registry.tag.BlockTags.REPLACEABLE) ||
-                                         blockState.isIn(net.minecraft.registry.tag.BlockTags.SAPLINGS) ||
-                                         block.toString().contains("vine") ||  // Ranken
-                                         block.toString().contains("fern")     // Farne
-                        
+                                blockState.isIn(net.minecraft.registry.tag.BlockTags.FLOWERS) ||
+                                blockState.isIn(net.minecraft.registry.tag.BlockTags.REPLACEABLE) ||
+                                blockState.isIn(net.minecraft.registry.tag.BlockTags.SAPLINGS) ||
+                                block.toString().contains("vine") ||  // Ranken
+                                block.toString().contains("fern")     // Farne
+
                         if (isLightBlock && Math.random() < BLOCK_BREAK_CHANCE) {
                             // Block zerstören mit Partikel-Effekt
                             world.breakBlock(blockPos, true, this)
-                            
+
                             // Optional: Spawn falling block entity für dramatischen Effekt
                             if (Math.random() < 0.1) { // 10% Chance für falling block
                                 val fallingBlock = net.minecraft.entity.FallingBlockEntity.spawnFromBlock(
@@ -470,7 +477,7 @@ object HelicopterEnchantmentV2 {
     private fun PlayerEntity.handleHelicopterInput() {
         val helmetStack = getEquippedStack(EquipmentSlot.HEAD)
         val helicopterLevel = helicopterV2.getLevel(helmetStack) ?: return
-        
+
         // Input handling is now done via KeyEvents only
     }
 
@@ -664,5 +671,5 @@ object HelicopterEnchantmentV2 {
         get() = this.getSyncedData<Boolean>("$MOD_ID:IsHelicopterMotorRunning") ?: false
         set(value) {
             this.setSyncedData("$MOD_ID:IsHelicopterMotorRunning", value)
-    }
+        }
 }

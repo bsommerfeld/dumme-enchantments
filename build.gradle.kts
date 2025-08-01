@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 val javaVersion = JvmTarget.JVM_21
 val silkVersion = "1.10.7"
-val minecraftVersion = "1.21"
+val minecraftVersion = "1.21.5"
 
 plugins {
     kotlin("jvm") version "2.0.0"
@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "gg.norisk"
-version = "${minecraftVersion}-1.0.16"
+version = "${minecraftVersion}-1.0.18"
 
 repositories {
     mavenCentral()

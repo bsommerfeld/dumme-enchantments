@@ -63,13 +63,11 @@ object SchleuderEnchantment {
     }
 
     fun initServer() {
-        if (FabricLoader.getInstance().isDevelopmentEnvironment) {
-            command("enchantments") {
-                literal("schleuder") {
-                    runs {
-                        this.default()
-                        this.schleuder()
-                    }
+        command("enchantments") {
+            literal("schleuder") {
+                runs {
+                    this.default()
+                    this.schleuder()
                 }
             }
         }
@@ -310,10 +308,10 @@ object SchleuderEnchantment {
         player.giveItemStack(itemStack(Items.ENCHANTED_BOOK, 1) {
             addEnchantment(EnchantmentRegistry.schleuder.getEntry(player.world), 1)
         })
-        player.giveItemStack(itemStack(Items.EXPERIENCE_BOTTLE,32) {
+        player.giveItemStack(itemStack(Items.EXPERIENCE_BOTTLE, 32) {
         })
-        player.inventory.setStack(9, itemStack(Items.ARROW, 64){})
-        player.inventory.setStack(35, itemStack(Items.BOW, 1){
+        player.inventory.setStack(9, itemStack(Items.ARROW, 64) {})
+        player.inventory.setStack(35, itemStack(Items.BOW, 1) {
             addEnchantment(EnchantmentRegistry.schleuder.getEntry(player.world), 1)
             addEnchantment(EnchantmentRegistry.bouncy.getEntry(player.world), 1)
         })

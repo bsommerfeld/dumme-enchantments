@@ -1,6 +1,7 @@
 package gg.norisk.enchantments.mixin.camerashaker;
 
 import gg.norisk.enchantments.utils.CameraShaker;
+import me.x150.geckoAnimLib.core.EntityDuck;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.hit.HitResult;
@@ -46,9 +47,11 @@ public abstract class CameraMixin {
         moveBy((float) .0, (float) y, (float) x);
         
         // Apply ground clipping to prevent camera from going underground
-        float clippedY = clipToBottom((float) pos.y);
-        if (clippedY != pos.y) {
-            setPos(pos.x, clippedY, pos.z);
+        if (((EntityDuck) focusedEntity).hasImmersiveCameraEmote() && !focusedEntity.isSpectator()) {
+            float clippedY = clipToBottom((float) pos.y);
+            if (clippedY != pos.y) {
+                setPos(pos.x, clippedY, pos.z);
+            }
         }
     }
     

@@ -69,13 +69,11 @@ object FreezeEnchantment {
             Animation.serializer(),
         )
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment) {
-            command("enchantments") {
-                literal("freeze") {
-                    runs {
-                        this.default()
-                        this.freeze()
-                    }
+        command("enchantments") {
+            literal("freeze") {
+                runs {
+                    this.default()
+                    this.freeze()
                 }
             }
         }
@@ -169,16 +167,16 @@ object FreezeEnchantment {
                 else -> Random.nextFloat() * 0.15f + 0.05f   // Rest kleine Stücke (0.05-0.2)
             }
 
-                        // Sanftes Zerbrechen: Kleine, lokale Bewegungen
+            // Sanftes Zerbrechen: Kleine, lokale Bewegungen
             val angle = Random.nextDouble() * 2 * Math.PI
             val heightFactor = Random.nextDouble(0.3, 0.9) // Mehr um Entity-Mitte
             val localRadius = Random.nextDouble(0.2, 0.8) // Viel kleinerer Radius
-            
+
             // Start-Position: Sehr nah an Entity
             val startX = entityPos.x + Random.nextDouble(-0.15, 0.15)
             val startY = entityPos.y + entityHeight * heightFactor
             val startZ = entityPos.z + Random.nextDouble(-0.15, 0.15)
-            
+
             // Sanfte Velocity: Mehr nach oben/unten, weniger horizontal
             val baseVelocity = Random.nextDouble(0.1, 0.3) // Viel langsamer
             val velocityX = cos(angle) * baseVelocity * localRadius * 0.5 // Reduzierte horizontale Kraft
@@ -208,44 +206,46 @@ object FreezeEnchantment {
             )
             blockDisplay.setTransformation(transformation)
 
-                        // Custom Velocity Storage (DisplayEntities haben keine eingebaute Physik)
+            // Custom Velocity Storage (DisplayEntities haben keine eingebaute Physik)
             var currentVelX = velocityX
             var currentVelY = velocityY
             var currentVelZ = velocityZ
-            
+
             // In Welt spawnen
             world.spawnEntity(blockDisplay)
             iceFragments.add(blockDisplay)
-            
+
             // === PHYSICS SIMULATION ===
             mcCoroutineTask(sync = true, client = false, howOften = 20, period = 1.ticks) { task ->
                 if (!blockDisplay.isAlive) {
                     blockDisplay.discard()
                     return@mcCoroutineTask
                 }
-                
+
                 // Gravity und Luftreibung anwenden
                 val gravityStrength = 0.04 // Realistische Schwerkraft
                 currentVelX *= 0.99 // Leichte Luftreibung
                 currentVelY -= gravityStrength
                 currentVelZ *= 0.99
-                
+
                 // Position manuell updaten (DisplayEntities haben keine Auto-Physik)
                 val currentPos = blockDisplay.pos
                 val newX = currentPos.x + currentVelX
                 val newY = currentPos.y + currentVelY
                 val newZ = currentPos.z + currentVelZ
-                
+
                 // Boden-Kollision prüfen
-                val groundY = world.getTopY(net.minecraft.world.Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, 
-                    newX.toInt(), newZ.toInt()).toDouble()
-                
+                val groundY = world.getTopY(
+                    net.minecraft.world.Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
+                    newX.toInt(), newZ.toInt()
+                ).toDouble()
+
                 if (newY <= groundY && currentVelY < 0) {
                     // Bounce-Effekt
                     currentVelY = -currentVelY * 0.4 // Bounce mit Energy-Loss
                     currentVelX *= 0.8 // Reibung beim Aufprall
                     currentVelZ *= 0.8
-                    
+
                     // Sound bei Aufprall
                     if (kotlin.math.abs(currentVelY) > 0.05) {
                         world.playSoundFromEntity(
@@ -256,23 +256,23 @@ object FreezeEnchantment {
                             Random.nextFloat() * 0.4f + 0.8f
                         )
                     }
-                    
+
                     blockDisplay.setPosition(newX, groundY + 0.1, newZ)
                 } else {
                     blockDisplay.setPosition(newX, newY, newZ)
                 }
-                
+
                 // Rotation während Flug (Tumbling)
                 val rotationSpeed = 6f
                 val currentTransformation = DisplayEntity.getTransformation(blockDisplay.dataTracker)
-                
+
                 val currentLeftRot = currentTransformation.leftRotation
                 val newLeftRotation = org.joml.Quaternionf(currentLeftRot).rotateXYZ(
                     Math.toRadians(rotationSpeed.toDouble()).toFloat(),
                     Math.toRadians(rotationSpeed * 0.7).toFloat(),
                     Math.toRadians(rotationSpeed * 1.3).toFloat()
                 )
-                
+
                 // Transformation mit neuer Rotation updaten
                 val newTransformation = AffineTransformation(
                     currentTransformation.translation,
@@ -281,14 +281,14 @@ object FreezeEnchantment {
                     currentTransformation.rightRotation
                 )
                 blockDisplay.setTransformation(newTransformation)
-                
+
                 // Fade-out in letzten 20 Ticks (1 Sekunde)
                 val timeLeft = (20 - task.round).toFloat() // Verbleibende Ticks
-                
+
                 if (timeLeft <= 10) { // Letzte Sekunde
                     val alpha = (timeLeft / 10f).coerceIn(0f, 1f)
                     val fadeScale = alpha * fragmentSize
-                    
+
                     val fadeTransformation = AffineTransformation(
                         currentTransformation.translation,
                         newLeftRotation,
@@ -492,26 +492,30 @@ object FreezeEnchantment {
         player.giveItemStack(itemStack(Items.IRON_GOLEM_SPAWN_EGG, 64) {})
         player.giveItemStack(itemStack(Items.HORSE_SPAWN_EGG, 64) {})
 
-        player.inventory.setStack(8,itemStack(Items.MACE, 1) {})
+        player.inventory.setStack(8, itemStack(Items.MACE, 1) {})
 
         player.sendMessage(literalText {
-            text("§b§lFreeze Enchantment - ") 
+            text("§b§lFreeze Enchantment - ")
             text("Wenn du nicht weiter weißt ->") {
                 italic = true
                 color = Color.LIGHT_GRAY.rgb
                 hoverEvent = HoverEvent.ShowText("Hover über die Nummern für Details".literal)
             }
             text("\n§71. ") {
-                hoverEvent = HoverEvent.ShowText("Schlage Entities mit dem Schwert - sie werden für 6 Sekunden eingefroren und können geschubst werden".literal)
+                hoverEvent =
+                    HoverEvent.ShowText("Schlage Entities mit dem Schwert - sie werden für 6 Sekunden eingefroren und können geschubst werden".literal)
             }
             text("§72. ") {
-                hoverEvent = HoverEvent.ShowText("Verwende die Mace (Slot 9) um gefrorene Entities zu zerbrechen - coole Eis-Splitter Animation!".literal)
+                hoverEvent =
+                    HoverEvent.ShowText("Verwende die Mace (Slot 9) um gefrorene Entities zu zerbrechen - coole Eis-Splitter Animation!".literal)
             }
             text("§73. ") {
-                hoverEvent = HoverEvent.ShowText("Gefrorene Entities verwandeln Wasser unter ihnen zu Eis (Frost Walker Effekt)".literal)
+                hoverEvent =
+                    HoverEvent.ShowText("Gefrorene Entities verwandeln Wasser unter ihnen zu Eis (Frost Walker Effekt)".literal)
             }
             text("§74. ") {
-                hoverEvent = HoverEvent.ShowText("Spawne Mobs mit den Eggs und probiere verschiedene Kombinationen aus!".literal)
+                hoverEvent =
+                    HoverEvent.ShowText("Spawne Mobs mit den Eggs und probiere verschiedene Kombinationen aus!".literal)
             }
         })
     }
