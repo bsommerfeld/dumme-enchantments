@@ -1,6 +1,6 @@
 package gg.norisk.enchantments.mixin.helicopterv2;
 
-import gg.norisk.enchantments.impl.HelicopterEnchantmentV2;
+import gg.norisk.animations.HelicopterAnimation;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -18,6 +18,6 @@ public class PlayerEntityModelMixin extends BipedEntityModel<PlayerEntityRenderS
 
     @Inject(method = "setAngles(Lnet/minecraft/client/render/entity/state/PlayerEntityRenderState;)V", at = @At(value = "TAIL"))
     private void helicopter$setAnglesTail(PlayerEntityRenderState playerEntityRenderState, CallbackInfo ci) {
-        HelicopterEnchantmentV2.INSTANCE.handleApplyPlayerModelRotations((PlayerEntityModel) (Object) this, playerEntityRenderState);
+        HelicopterAnimation.INSTANCE.applyPlayerModelRotations((PlayerEntityModel) (Object) this, playerEntityRenderState);
     }
 }

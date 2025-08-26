@@ -24,9 +24,6 @@
       {
         "value": "gg.norisk.datatracker.DataTracker",
         "adapter": "kotlin"
-      },
-      {
-        "value": "gg.norisk.enchantments.impl.boomerang.AxeThrow"
       }
     ],
     "client": [

@@ -1,11 +1,11 @@
 package gg.norisk.enchantments.impl.stolper
 
 import com.mojang.brigadier.context.CommandContext
+import gg.norisk.animations.StolperAnimation
 import gg.norisk.datatracker.entity.getSyncedData
 import gg.norisk.datatracker.entity.registeredTypes
 import gg.norisk.datatracker.entity.setSyncedData
 import gg.norisk.datatracker.serialization.Vec3dSerializer
-import gg.norisk.emote.network.EmoteNetworking.playEmote
 import gg.norisk.emote.network.EmoteNetworking.stopEmote
 import gg.norisk.enchantments.EnchantmentRegistry
 import gg.norisk.enchantments.EnchantmentUtils.getLevel
@@ -61,18 +61,18 @@ object StolperEnchantment {
                 // Check if player has the stumble enchantment on their boots
                 val level = EnchantmentRegistry.stumble.getLevel(player.getEquippedStack(EquipmentSlot.FEET))
                 //if (level != null) {
-                    // If player is already stumbling, check if they've moved enough to get up
-                    if (player.isStumbling) {
-                        player.stumbleTicks++
-                        val distanceMoved = player.pos.distanceTo(player.stumblePos ?: player.pos)
-                        if (distanceMoved >= 0.3 && player.stumbleTicks > 30) {
-                            // Player has moved enough, stop the stumbling
-                            player.isStumbling = false
-                            player.stumblePos = null
-                            player.stumbleTicks = 0
-                            player.stopEmote("emotes/stolpernv2.animation.json".toId())
-                        }
+                // If player is already stumbling, check if they've moved enough to get up
+                if (player.isStumbling) {
+                    player.stumbleTicks++
+                    val distanceMoved = player.pos.distanceTo(player.stumblePos ?: player.pos)
+                    if (distanceMoved >= 0.3 && player.stumbleTicks > 30) {
+                        // Player has moved enough, stop the stumbling
+                        player.isStumbling = false
+                        player.stumblePos = null
+                        player.stumbleTicks = 0
+                        player.stopEmote("emotes/stolpernv2.animation.json".toId())
                     }
+                }
                 //}
             }
         }
@@ -88,7 +88,7 @@ object StolperEnchantment {
         player.giveItemStack(itemStack(Items.ENCHANTED_BOOK, 1) {
             addEnchantment(EnchantmentRegistry.stumble.getEntry(player.world), 1)
         })
-        player.giveItemStack(itemStack(Items.EXPERIENCE_BOTTLE,32) {
+        player.giveItemStack(itemStack(Items.EXPERIENCE_BOTTLE, 32) {
         })
 
         player.sendMessage(literalText {
@@ -106,8 +106,8 @@ object StolperEnchantment {
 
     private fun Entity.stolper() {
         val entity = this as? ServerPlayerEntity? ?: return
-        playEmote("emotes/stolpernv2.animation.json".toId())
-        sound(SoundRegistry.STOLPERN, 0.6, Random.nextDouble(0.9,1.2))
+        StolperAnimation.playStumbleEmote(entity)
+        sound(SoundRegistry.STOLPERN, 0.6, Random.nextDouble(0.9, 1.2))
         damage(serverWorld, this.damageSources.generic(), 1f)
         isStumbling = true
         stumblePos = pos

@@ -1,6 +1,6 @@
 package gg.norisk.enchantments.mixin.client;
 
-import gg.norisk.enchantments.impl.HelicopterEnchantmentV2;
+import gg.norisk.animations.HelicopterAnimation;
 import me.x150.geckoAnimLib.core.ModelPartTransform;
 import me.x150.geckoAnimLib.core.PlayerRendererDuck;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -148,7 +148,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, S extend
     @ModifyArgs(method = "render(Lnet/minecraft/client/render/entity/state/LivingEntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/EntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;III)V"))
     void raa(Args args, S livingEntityRenderState, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         if (this instanceof PlayerRendererDuck pr) {
-            HelicopterEnchantmentV2.INSTANCE.handleForwardRotation(args, livingEntityRenderState, matrixStack, vertexConsumerProvider, i);
+            HelicopterAnimation.INSTANCE.handleForwardRotation(args, livingEntityRenderState, matrixStack, vertexConsumerProvider, i);
         }
     }
 }

@@ -1,6 +1,5 @@
 package gg.norisk.enchantments.impl
 
-import com.jogamp.opengl.math.FloatUtil.pow
 import com.mojang.brigadier.context.CommandContext
 import gg.norisk.datatracker.entity.getSyncedData
 import gg.norisk.datatracker.entity.registeredTypes
@@ -20,7 +19,6 @@ import kotlinx.serialization.Serializable
 import me.x150.geckoAnimLib.core.ModelPartTransform
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
-import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.AbstractClientPlayerEntity
 import net.minecraft.client.network.ClientPlayerEntity
