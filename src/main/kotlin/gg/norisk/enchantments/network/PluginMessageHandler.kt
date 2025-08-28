@@ -23,6 +23,10 @@ import java.io.DataInputStream
  */
 object PluginMessageHandler {
 
+    @Volatile
+    private var stolperLocked: Boolean = false
+    fun isStolperLocked(): Boolean = stolperLocked
+
     /**
      * Minimal payload wrapper for the "norisk:phase" channel.
      * Provides the PacketCodec and static channel id.
@@ -140,7 +144,8 @@ object PluginMessageHandler {
             val player = context.client().player
             if (player != null) {
                 player.playEmote(STOLPER_EMOTE_ID)
-                StupidEnchantments.logger.info("[PMC] Triggered Stolper animation ($source)")
+                stolperLocked = true
+                StupidEnchantments.logger.info("[PMC] Triggered Stolper animation ($source) - inputs locked")
             } else {
                 StupidEnchantments.logger.warn("[PMC] Could not trigger Stolper animation: client player is null")
             }
@@ -161,7 +166,8 @@ object PluginMessageHandler {
             val player = context.client().player
             if (player != null) {
                 player.stopEmote(STOLPER_EMOTE_ID)
-                StupidEnchantments.logger.info("[PMC] Stopped Stolper animation ($source)")
+                stolperLocked = false
+                StupidEnchantments.logger.info("[PMC] Stopped Stolper animation ($source) - inputs unlocked")
             } else {
                 StupidEnchantments.logger.warn("[PMC] Could not stop Stolper animation: client player is null")
             }
