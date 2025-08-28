@@ -1,6 +1,7 @@
 package gg.norisk.enchantments.network
 
 import gg.norisk.emote.ext.playEmote
+import gg.norisk.emote.ext.stopEmote
 import gg.norisk.enchantments.StupidEnchantments
 import gg.norisk.enchantments.StupidEnchantments.toId
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking
@@ -89,36 +90,19 @@ object PluginMessageHandler {
         )
     }
 
-    /** True if the parsed fields indicate the Stolper animation. */
-    private fun isAnimationStolper(type: String, payload: String): Boolean =
-        type.equals("animation", ignoreCase = true) && payload.equals("stolper", ignoreCase = true)
+    private fun isAnimationStolperStart(type: String, payload: String): Boolean =
+        type.equals("animation:start", ignoreCase = true) && payload.equals("stolper", ignoreCase = true)
 
-    /** Heuristic detection of "animation: stolper" in free-form text payloads. */
-    private fun isAnimationStolperText(text: String): Boolean {
-        val normalized = text.lowercase().trim()
-        return when {
-            normalized.contains("\"type\"") && normalized.contains("animation") &&
-                    normalized.contains("\"payload\"") && normalized.contains("stolper") -> true
-
-            normalized.contains("type=animation") && normalized.contains("payload=stolper") -> true
-            normalized.startsWith("animation") && normalized.contains("stolper") -> true
-            else -> false
-        }
-    }
+    private fun isAnimationStolperStop(type: String, payload: String): Boolean =
+        type.equals("animation:stop", ignoreCase = true) && payload.equals("stolper", ignoreCase = true)
 
     /** Handles a parsed message; returns true if an action was taken. */
     private fun maybeHandleParsed(parsed: Parsed, context: ClientPlayNetworking.Context): Boolean {
-        if (isAnimationStolper(parsed.type, parsed.payload)) {
+        if (isAnimationStolperStart(parsed.type, parsed.payload)) {
             playStolper(context, "parsed writeUTF message")
             return true
-        }
-        return false
-    }
-
-    /** Handles a textual fallback message; returns true if an action was taken. */
-    private fun maybeHandleHeuristic(text: String, context: ClientPlayNetworking.Context): Boolean {
-        if (isAnimationStolperText(text)) {
-            playStolper(context, "heuristic plugin message")
+        } else if (isAnimationStolperStop(parsed.type, parsed.payload)) {
+            stopStolper(context, "parsed writeUTF message")
             return true
         }
         return false
@@ -145,7 +129,7 @@ object PluginMessageHandler {
 
                 val text = decodeUtf8(bytes)
                 logPhaseReceived(bytes, text)
-                maybeHandleHeuristic(text, context)
+                throw IllegalArgumentException("Could not parse plugin message")
             }
         }
     }
@@ -165,4 +149,24 @@ object PluginMessageHandler {
         }
     }
 
+    /**
+     * Stops the Stolper animation for the client player, if available. Logs relevant information
+     * or errors during the process.
+     *
+     * @param context The networking context which provides access to the client and player instance.
+     * @param source A string identifier indicating the source or reason for stopping the animation.
+     */
+    private fun stopStolper(context: ClientPlayNetworking.Context, source: String) {
+        try {
+            val player = context.client().player
+            if (player != null) {
+                player.stopEmote(STOLPER_EMOTE_ID)
+                StupidEnchantments.logger.info("[PMC] Stopped Stolper animation ($source)")
+            } else {
+                StupidEnchantments.logger.warn("[PMC] Could not stop Stolper animation: client player is null")
+            }
+        } catch (t: Throwable) {
+            StupidEnchantments.logger.error("[PMC] Failed to stop Stolper animation", t)
+        }
+    }
 }
