@@ -21,18 +21,19 @@ import java.io.DataInputStream
  * - Trigger the "stolper" animation on messages of type=animation, payload=stolper.
  */
 object PluginMessageHandler {
+
     /**
      * Minimal payload wrapper for the "norisk:phase" channel.
      * Provides the PacketCodec and static channel id.
      */
-    data class NoriskPhasePayload(val data: ByteArray) : CustomPayload {
+    data class PhasePayload(val data: ByteArray) : CustomPayload {
         override fun getId(): CustomPayload.Id<out CustomPayload> = ID
 
         companion object {
-            val ID: CustomPayload.Id<NoriskPhasePayload> = CustomPayload.Id(Identifier.of("norisk", "phase"))
-            val CODEC: PacketCodec<PacketByteBuf, NoriskPhasePayload> = PacketCodec.of(
+            val ID: CustomPayload.Id<PhasePayload> = CustomPayload.Id(Identifier.of("norisk", "phase"))
+            val CODEC: PacketCodec<PacketByteBuf, PhasePayload> = PacketCodec.of(
                 { value, buf -> buf.writeByteArray(value.data) },
-                { buf -> NoriskPhasePayload(buf.readByteArray()) }
+                { buf -> PhasePayload(buf.readByteArray()) }
             )
         }
     }
@@ -93,6 +94,7 @@ object PluginMessageHandler {
         return when {
             normalized.contains("\"type\"") && normalized.contains("animation") &&
                     normalized.contains("\"payload\"") && normalized.contains("stolper") -> true
+
             normalized.contains("type=animation") && normalized.contains("payload=stolper") -> true
             normalized.startsWith("animation") && normalized.contains("stolper") -> true
             else -> false
@@ -122,9 +124,9 @@ object PluginMessageHandler {
      * Safe to call once during client initialization.
      */
     fun initClient() {
-        PayloadTypeRegistry.playS2C().register(NoriskPhasePayload.ID, NoriskPhasePayload.CODEC)
+        PayloadTypeRegistry.playS2C().register(PhasePayload.ID, PhasePayload.CODEC)
 
-        ClientPlayNetworking.registerGlobalReceiver(NoriskPhasePayload.ID) { payload, context ->
+        ClientPlayNetworking.registerGlobalReceiver(PhasePayload.ID) { payload, context ->
             context.client().execute {
                 val bytes = payload.data
 
