@@ -33,7 +33,12 @@ object PluginMessageHandler {
             val ID: CustomPayload.Id<PhasePayload> = CustomPayload.Id(Identifier.of("norisk", "phase"))
             val CODEC: PacketCodec<PacketByteBuf, PhasePayload> = PacketCodec.of(
                 { value, buf -> buf.writeByteArray(value.data) },
-                { buf -> PhasePayload(buf.readByteArray()) }
+                { buf ->
+                    val readableBytes = buf.readableBytes()
+                    val data = ByteArray(readableBytes)
+                    buf.readBytes(data)
+                    PhasePayload(data)
+                }
             )
         }
     }
@@ -159,4 +164,5 @@ object PluginMessageHandler {
             StupidEnchantments.logger.error("[PMC] Failed to play Stolper animation", t)
         }
     }
+
 }
